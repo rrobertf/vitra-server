@@ -1,0 +1,602 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080809"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Vitra"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="mobile-web-app-capable" content="yes"><meta name="description" content="Vitra: tu música con un diseño de cristal, playlists y descargas."><title>Vitra · Música</title><link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180"></head><body><div id="vitra-iphone" class="viz-dotted-background">
+ <div class="phone" aria-label="Vitra para iPhone">
+  <div class="status"><span>9:41</span><span class="island"></span><span>▮▮▮  ▰</span></div>
+  <main class="content" aria-live="polite"></main>
+  <div class="dock"><div class="mini"><button class="now" aria-label="Ampliar reproductor"></button><button class="play" aria-label="Reproducir o pausar"></button><button class="next" aria-label="Siguiente canción"><canvas class="pc-icon" data-glyph="next" width="72" height="72" aria-hidden="true"></canvas></button></div><nav aria-label="Navegación principal"><div class="nav-main"><button data-page="home"><i data-lucide="house"></i><span>Inicio</span></button><button data-page="library"><i data-lucide="library"></i><span>Biblioteca</span></button></div><button class="search-tab" data-page="search" aria-label="Search"><i data-lucide="search"></i><span>Search</span></button></nav></div>
+  <section class="expanded" hidden aria-label="Reproductor ampliado"></section>
+  <div class="homebar"></div>
+ </div>
+</div>
+<style>
+#vitra-iphone{padding:24px 0;display:flex;justify-content:center}#vitra-iphone *{box-sizing:border-box}#vitra-iphone .phone{--ink:#f4f6f8;--dim:#a5aeb4;--glass:rgba(255,255,255,.075);--edge:rgba(255,255,255,.19);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink);width:min(390px,100%);height:790px;position:relative;overflow:hidden;border-radius:46px;border:1px solid #67716f;background:radial-gradient(ellipse at 0 25%,#34504799,transparent 64%),radial-gradient(ellipse at 100% 65%,#45536677,transparent 65%),#101415;box-shadow:0 24px 65px #0005;font-size:15px;line-height:1.4}#vitra-iphone button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:8px;touch-action:manipulation}#vitra-iphone button:active{transform:scale(.96)}#vitra-iphone .status{height:64px;padding:19px 27px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:13px}#vitra-iphone .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:30px;background:#060707;border-radius:30px}#vitra-iphone .content{height:726px;overflow:auto;padding:10px 22px 185px;scrollbar-width:none}#vitra-iphone h1{font-size:32px;letter-spacing:-1.2px;margin:10px 0 22px;line-height:1.1}#vitra-iphone h2{font-size:21px;letter-spacing:-.5px;margin:24px 0 14px}#vitra-iphone h3{font-size:16px;margin:0}#vitra-iphone p{margin:4px 0;color:var(--dim)}#vitra-iphone .eyebrow{font-size:11px;letter-spacing:2.7px;color:#b7c7c4}#vitra-iphone .top{display:flex;align-items:center;justify-content:space-between}#vitra-iphone .round{border:1px solid var(--edge);border-radius:50%;width:40px;height:40px;display:grid;place-items:center;background:var(--glass)}#vitra-iphone svg{width:21px;height:21px;stroke-width:1.7}#vitra-iphone .hero{position:relative;border-radius:27px;overflow:hidden;min-height:212px;background:radial-gradient(ellipse at 80% 0,#b6d0bb88,transparent 66%),linear-gradient(145deg,#53665c,#172325);padding:25px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--edge)}#vitra-iphone .hero h2{font-size:32px;max-width:200px;margin:0;line-height:1.05;font-weight:500}#vitra-iphone .hero p{color:#d6dedb;margin-top:10px}#vitra-iphone .hero button{position:absolute;right:19px;bottom:20px;border-radius:50%;width:48px;height:48px;background:#e5eeeb;color:#23332f;display:grid;place-items:center}#vitra-iphone .glassmark{position:absolute;right:31px;top:25px;display:flex;gap:8px;align-items:center;transform:rotate(16deg)}#vitra-iphone .glassmark b{display:block;width:20px;height:65px;border-radius:20px;background:linear-gradient(110deg,#fff8,#fff1 38%,#fff7);border:1px solid #fff7;box-shadow:inset 2px 0 4px #fff7,0 10px 25px #0003}#vitra-iphone .glassmark b:nth-child(2){height:110px}#vitra-iphone .grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}#vitra-iphone .tile{padding:0;text-align:left;min-width:0}#vitra-iphone .art{position:relative;overflow:hidden;display:grid;place-items:center;flex-shrink:0;aspect-ratio:1;border-radius:16px;box-shadow:0 8px 20px #0003;background:radial-gradient(ellipse at 70% 30%,var(--tint),transparent 63%),linear-gradient(140deg,#1d2527,#080b0d);isolation:isolate}#vitra-iphone .art:before{content:'';position:absolute;width:80%;height:80%;border:1px solid #ffffff38;border-radius:50%;transform:rotate(-28deg) scaleX(.57);box-shadow:10px 0 40px var(--tint),inset 10px 0 30px #ffffff25}#vitra-iphone .art span{font-size:13px;font-weight:500;letter-spacing:3px;text-align:center;z-index:1;text-shadow:0 2px 15px #000;max-width:90%;overflow-wrap:anywhere}#vitra-iphone .tile strong{display:block;margin-top:10px;font-weight:500}#vitra-iphone .tile p{font-size:12px}#vitra-iphone .row{width:100%;display:flex;gap:12px;text-align:left;align-items:center;padding:10px 0;min-width:0}#vitra-iphone .row .art{width:48px;border-radius:10px}#vitra-iphone .row .meta{flex:1;min-width:0}#vitra-iphone .meta strong{font-weight:500;display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#vitra-iphone .meta small{color:var(--dim);font-size:12px}#vitra-iphone .row>.time{font-size:11px;color:var(--dim)}#vitra-iphone .dock{position:absolute;bottom:24px;left:12px;right:12px;z-index:5}#vitra-iphone .mini{height:66px;display:flex;gap:6px;align-items:center;padding:7px 10px;border:1px solid #ffffff30;border-radius:23px;background:#38433ee0;backdrop-filter:blur(30px);box-shadow:inset 0 1px #ffffff20,0 10px 28px #0003}#vitra-iphone .now{display:flex;align-items:center;gap:11px;flex:1;min-width:0;text-align:left;padding:0}#vitra-iphone .mini .art{width:45px;border-radius:11px}#vitra-iphone .mini .meta strong{font-size:13px}#vitra-iphone .mini .meta small{font-size:11px}#vitra-iphone nav{margin:9px 20px 0;display:flex;justify-content:space-around;border:1px solid #ffffff28;border-radius:32px;background:#222b2ce8;backdrop-filter:blur(30px);padding:5px}#vitra-iphone nav button{display:flex;flex-direction:column;gap:3px;align-items:center;font-size:10px;color:#adb6b9;border-radius:24px;padding:9px 20px}#vitra-iphone nav button.active{background:#ffffff18;color:#fff;box-shadow:inset 0 1px #ffffff20}#vitra-iphone .homebar{position:absolute;bottom:8px;left:35%;width:30%;height:5px;background:#e5e9e7;border-radius:8px;z-index:20}#vitra-iphone input[type=search],#vitra-iphone input[type=text]{width:100%;padding:13px 15px;background:#ffffff10;border:1px solid var(--edge);border-radius:17px;color:var(--ink);font:inherit;font-size:16px;outline-offset:3px;margin:0 0 15px}#vitra-iphone .chips{display:flex;gap:8px;margin:0 0 17px}#vitra-iphone .chips button,#vitra-iphone .pill{border:1px solid var(--edge);border-radius:20px;background:var(--glass);padding:9px 15px;font-size:13px}#vitra-iphone .chips button.active{background:#e1ebe5;color:#17251f}#vitra-iphone .artist{display:flex;align-items:center;gap:15px;width:100%;border:1px solid var(--edge);background:var(--glass);border-radius:23px;text-align:left;padding:13px}#vitra-iphone .portrait{width:64px;border-radius:50%}#vitra-iphone .center{text-align:center}#vitra-iphone .bigcover{width:210px;margin:20px auto;border-radius:25px}#vitra-iphone .actions{display:flex;gap:10px;margin:20px 0}#vitra-iphone .actions button{flex:1;background:#ffffff17;border:1px solid var(--edge);border-radius:17px;padding:13px;display:flex;align-items:center;justify-content:center;gap:9px}#vitra-iphone .back{display:flex;align-items:center;gap:4px;padding-left:0;color:#dce7e2}#vitra-iphone .expanded{position:absolute;inset:0;z-index:10;padding:18px 29px 40px;background:radial-gradient(ellipse at 0 30%,#657b6588,transparent 75%),radial-gradient(ellipse at 100% 70%,#5b637b66,transparent 70%),#151b1bea;backdrop-filter:blur(40px);animation:v-up .35s cubic-bezier(.2,.8,.2,1);overflow:auto}#vitra-iphone .expanded .bigcover{width:100%;margin:46px auto 30px;border-radius:27px}#vitra-iphone .expanded .handle{width:38px;height:5px;border-radius:8px;background:#ffffff65;margin:0 auto}#vitra-iphone .expanded h2{margin:0;font-size:25px}#vitra-iphone .expanded input[type=range]{width:100%;accent-color:#e7f0ea;height:22px;margin:25px 0 0}#vitra-iphone .timepair{display:flex;justify-content:space-between;color:#b0beb7;font-size:11px}#vitra-iphone .transport{display:flex;align-items:center;justify-content:space-between;margin:24px 0}#vitra-iphone .transport .play svg{width:47px;height:47px;fill:currentColor;stroke-width:1}#vitra-iphone .transport .small{border-radius:22px;background:#ffffff15}#vitra-iphone .transport .on{background:#dce8e1;color:#27392f}#vitra-iphone .expanded footer{display:flex;align-items:center;justify-content:space-between;margin-top:25px}#vitra-iphone .lyrics{padding:70px 0 20px;min-height:330px}#vitra-iphone .lyrics p{font-size:26px;font-weight:500;margin:25px 0;color:#8d9f95}#vitra-iphone .lyrics p.current{color:#f0f6f3}#vitra-iphone .setting{display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:1px solid #ffffff10;gap:10px}#vitra-iphone .setting select{max-width:140px;border-radius:12px;padding:8px;color:#edf3f0;background:#37423f;border:1px solid var(--edge)}#vitra-iphone input[type=checkbox]{accent-color:#b5c9bf;width:21px;height:21px}#vitra-iphone .empty{padding:30px 0;color:var(--dim)}@keyframes v-up{from{transform:translateY(50px);opacity:0}to{transform:none;opacity:1}}@media(prefers-reduced-motion:reduce){#vitra-iphone *{animation:none!important;transition:none!important}}@media(max-width:370px){#vitra-iphone .phone{border-radius:30px}#vitra-iphone .content{padding-left:17px;padding-right:17px}#vitra-iphone nav button{padding:9px 16px}}
+#vitra-iphone .art.photo:before{display:none}#vitra-iphone .art.photo{background-repeat:no-repeat}#vitra-iphone .photo img{display:none}#vitra-iphone .photo.cover-0{background-image:var(--cover-sheet-0);background-size:506.9868995633188% 331.4410480349345%;background-position:94.09871244635193% 30.566037735849054%}#vitra-iphone .photo.cover-1{background-image:var(--cover-sheet-0);background-size:2418.75% 1581.25%;background-position:18.418688230008982% 40.646976090014064%}#vitra-iphone .photo.cover-2{background-image:var(--cover-sheet-0);background-size:2418.75% 1581.25%;background-position:18.418688230008982% 81.15330520393812%}#vitra-iphone .photo.cover-3{background-image:var(--cover-sheet-1);background-size:142.10526315789474% 300.8771929824561%;background-position:50% 21.17903930131004%}#vitra-iphone .photo.cover-4{background-image:var(--cover-sheet-0);background-size:2418.75% 1581.25%;background-position:18.418688230008982% 61.04078762306611%}#vitra-iphone .photo.cover-5{background-image:var(--cover-sheet-0);background-size:2418.75% 1581.25%;background-position:18.418688230008982% 71.0267229254571%}
+#vitra-iphone .phone{background:radial-gradient(ellipse at 0 0,#405a5038,transparent 70%),#111514}
+#vitra-iphone .hero{min-height:180px;border-radius:15px;margin-bottom:29px}#vitra-iphone .hero h2{font-size:26px}#vitra-iphone .glassmark{opacity:.65;transform:rotate(0deg) scale(.8);top:15px}
+#vitra-iphone .art{border-radius:9px}#vitra-iphone .row .art{border-radius:6px}#vitra-iphone .tile p{margin-top:2px}#vitra-iphone .grid{row-gap:23px}#vitra-iphone h1{font-weight:700;letter-spacing:-1px}
+#vitra-iphone .librarylinks{margin-bottom:22px}#vitra-iphone .librarylinks .row{border-bottom:1px solid #ffffff16;padding:15px 0;gap:16px}#vitra-iphone .librarylinks .row span{flex:1;font-size:20px}#vitra-iphone .librarylinks .row>svg:last-child{width:15px;color:#a7b6ad}
+#vitra-iphone .dock{bottom:27px;left:13px;right:13px}#vitra-iphone .mini{height:61px;border-radius:20px;background:#48544caa;border-color:#e1eee930;box-shadow:inset 0 1px 1px #ffffff28,0 6px 25px #0002;backdrop-filter:blur(35px) saturate(1.6)}#vitra-iphone .mini .art{width:41px;border-radius:7px}#vitra-iphone .mini .meta strong{font-size:14px}#vitra-iphone .mini .meta small{display:none}#vitra-iphone nav{margin:10px 26px 0;border-radius:36px;padding:4px;background:#424a46b8;border-color:#ffffff33;box-shadow:inset 0 1px #ffffff30,0 5px 20px #0002}#vitra-iphone nav button{font-size:10px;font-weight:600;padding:9px 20px;border-radius:29px}#vitra-iphone nav button.active{background:#eff8f023;box-shadow:inset 0 1px 1px #ffffff38}
+#vitra-iphone .play svg,#vitra-iphone .next svg,#vitra-iphone [data-action=previous] svg,#vitra-iphone [data-action=next] svg,#vitra-iphone .actions [data-song] svg,#vitra-iphone .hero button svg{fill:currentColor;stroke-width:1.5;stroke-linejoin:round}#vitra-iphone .mini .next svg{width:25px;height:25px}
+#vitra-iphone .expanded{padding:14px 29px 40px;background:radial-gradient(ellipse at 20% 30%,#88744666,transparent 65%),radial-gradient(ellipse at 100% 85%,#60543c55,transparent 70%),#242824f5}#vitra-iphone .expanded .top .eyebrow{opacity:0}#vitra-iphone .expanded .top:first-of-type{height:35px}#vitra-iphone .expanded .bigcover{margin:49px auto 35px;width:100%;border-radius:11px;box-shadow:0 22px 35px #0005}#vitra-iphone .expanded h2{font-size:24px;font-weight:600;letter-spacing:-.5px}#vitra-iphone .expanded p{font-size:18px;color:#d2d2c4}#vitra-iphone .expanded .top>button[data-action=favorite]{border-radius:50%;background:#ffffff17;width:36px;height:36px;display:grid;place-items:center}#vitra-iphone .expanded .top>button[data-action=favorite] svg{width:18px;height:18px}#vitra-iphone .expanded input[type=range]{margin-top:23px;height:14px;accent-color:#e4e8dc}#vitra-iphone .expanded .timepair{margin-top:3px;color:#c7c8ba}
+#vitra-iphone .transport{position:relative;justify-content:center;gap:49px;margin:27px 0 33px}#vitra-iphone .transport>button{display:grid;place-items:center;min-width:44px;min-height:48px;padding:0}#vitra-iphone .transport>button svg{width:31px;height:31px}#vitra-iphone .transport .play svg{width:43px;height:43px}#vitra-iphone .transport .small{position:absolute;bottom:-70px;background:none;min-width:36px;min-height:36px}#vitra-iphone .transport .small:first-child{left:26px}#vitra-iphone .transport .small:last-child{right:26px}#vitra-iphone .transport .small svg{width:19px;height:19px}#vitra-iphone .transport .small.on{color:#edf4e9;background:#ffffff25}
+#vitra-iphone .expanded footer{margin:70px 30px 0;justify-content:space-between}#vitra-iphone .expanded footer button{width:42px;height:42px;display:grid;place-items:center;border-radius:12px}#vitra-iphone .expanded footer .selected{background:#ffffff25}#vitra-iphone .expanded footer svg{width:24px;height:24px}#vitra-iphone .player-detail{margin-top:15px}#vitra-iphone .player-detail h3{margin:15px 0}#vitra-iphone .output{padding:16px;border-radius:14px;background:#ffffff18;display:flex;justify-content:space-between}#vitra-iphone .lyrics{padding-top:45px;min-height:320px}#vitra-iphone .lyrics p{font-size:28px;letter-spacing:-.5px}
+@media(max-width:350px){#vitra-iphone .transport{gap:35px}#vitra-iphone .expanded{padding-left:24px;padding-right:24px}#vitra-iphone nav{margin-left:10px;margin-right:10px}}
+
+#vitra-iphone .pc-icon{display:block;width:24px;height:24px;color:inherit;flex:none}
+#vitra-iphone .expanded{display:flex;flex-direction:column;gap:0;padding:15px 27px 45px;overflow:auto;scrollbar-width:none}
+#vitra-iphone .expanded[hidden]{display:none}
+#vitra-iphone .pc-player-head{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;text-align:center;min-height:45px;margin-top:7px}
+#vitra-iphone .pc-player-head span{font-size:11px;letter-spacing:2px;color:#c3cbc5}
+#vitra-iphone .pc-player-head button{min-width:44px;min-height:44px;display:grid;place-items:center}
+#vitra-iphone .expanded .bigcover{width:min(100%,282px);flex:none;margin:25px auto 28px;border-radius:17px}
+#vitra-iphone .pc-song{text-align:center;min-width:0}#vitra-iphone .pc-song h2{font-size:24px;margin:0;overflow-wrap:anywhere}#vitra-iphone .pc-song p{font-size:16px;margin:5px 0 0}
+#vitra-iphone .pc-seek{margin:23px 0 0}
+#vitra-iphone .expanded input[type=range]{display:block;appearance:none;-webkit-appearance:none;min-width:0;width:100%;height:28px;border:0;border-radius:0;background:transparent;margin:0;padding:0;color:#fff;outline-offset:4px;box-shadow:none}
+#vitra-iphone .expanded input[type=range]::-webkit-slider-runnable-track{height:4px;border:0;border-radius:4px;background:linear-gradient(to right,#f2f2f7 var(--progress),#ffffff36 var(--progress));box-shadow:none}
+#vitra-iphone .expanded input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#f5f5f7;border:0;margin-top:-4.5px;box-shadow:0 1px 4px #0004}
+#vitra-iphone .expanded input[type=range]::-moz-range-track{height:4px;background:#ffffff36;border:0;border-radius:4px}
+#vitra-iphone .expanded input[type=range]::-moz-range-progress{height:4px;background:#f2f2f7;border-radius:4px}
+#vitra-iphone .expanded input[type=range]::-moz-range-thumb{width:13px;height:13px;background:#f5f5f7;border:0;border-radius:50%}
+#vitra-iphone .expanded .timepair{font-size:11px;margin:0;color:#bcc5bd}
+#vitra-iphone .expanded .transport{position:static;display:flex;align-items:center;justify-content:center;gap:5px;margin:14px 0 15px;min-height:68px;flex:none}
+#vitra-iphone .expanded .transport>button{position:static;flex:0 0 42px;min-width:0;min-height:52px;width:42px;height:52px;padding:6px;display:grid;place-items:center}
+#vitra-iphone .expanded .transport>button .pc-icon{width:29px;height:25px}
+#vitra-iphone .expanded .transport>.play{flex-basis:52px;width:52px;height:68px;min-height:68px;padding:6px}
+#vitra-iphone .expanded .transport>.play .pc-icon{width:36px;height:38px}
+#vitra-iphone .expanded .transport>.small{flex-basis:52px;width:52px;min-height:28px;height:28px;padding:4px 15px;border-radius:18px;background:#ffffff22;color:#fff;margin:0}
+#vitra-iphone .expanded .transport>.small .pc-icon{width:21px;height:21px}
+#vitra-iphone .expanded .transport>.small:first-child{margin-right:3px}
+#vitra-iphone .expanded .transport>.small:last-child{margin-left:3px}
+#vitra-iphone .expanded .transport>.small.on{background:#b7b7b9;color:#353637}
+#vitra-iphone .pc-volume{width:min(100%,255px);display:flex;align-items:center;gap:12px;margin:0 auto;min-height:44px;flex:none}
+#vitra-iphone .pc-volume>svg{width:15px;height:15px;flex:none;color:#bbc3bd}
+#vitra-iphone .pc-volume input{flex:1}
+#vitra-iphone .pc-volume>button{display:grid;place-items:center;width:36px;height:28px;min-width:36px;padding:5px 9px;border-radius:18px;background:#ffffff22}
+#vitra-iphone .pc-volume>button .pc-icon{width:18px;height:18px}
+#vitra-iphone .pc-volume>button.selected{background:#b7b7b9;color:#353637}
+#vitra-iphone .expanded .lyrics{min-height:282px;padding:10px 0;margin:25px auto 28px}
+#vitra-iphone .mini .play .pc-icon{width:24px;height:26px}#vitra-iphone .mini .next .pc-icon{width:24px;height:22px}
+@media(max-width:350px){#vitra-iphone .expanded{padding-left:18px;padding-right:18px}#vitra-iphone .expanded .transport{gap:2px}#vitra-iphone .expanded .transport>.small{flex-basis:46px;width:46px;padding-left:12px;padding-right:12px}#vitra-iphone .expanded .bigcover{width:252px}}
+
+#vitra-iphone .phone{background:radial-gradient(ellipse at 0 0,#33473c28,transparent 70%),#121615}
+#vitra-iphone .content{padding-top:1px;padding-bottom:175px}#vitra-iphone .mobile-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 23px}#vitra-iphone .mobile-header h1{font-size:31px;letter-spacing:-1px;margin:0;line-height:1.2}#vitra-iphone .header-tools{display:flex;gap:7px}#vitra-iphone .mobile-header .round{width:34px;height:34px;flex:none}#vitra-iphone .mobile-header .round svg{width:18px;height:18px}
+#vitra-iphone .pinned{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:23px}#vitra-iphone .pinned .tile strong{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;margin-top:7px}#vitra-iphone .librarylinks{margin-bottom:24px}#vitra-iphone .librarylinks .row{padding:13px 0;min-height:51px}#vitra-iphone .librarylinks .row span{font-size:16px}#vitra-iphone .librarylinks .row>svg:first-child{width:22px;color:#dce8e0}#vitra-iphone .grid .tile strong{font-size:14px}#vitra-iphone h2{margin-top:22px}
+#vitra-iphone .dock{bottom:25px;left:13px;right:13px;transition:all .25s ease}#vitra-iphone .mini{border-radius:32px;height:56px;padding:6px 13px;background:#4a564bba}#vitra-iphone .mini .art{width:38px;border-radius:8px}#vitra-iphone .mini .now{gap:10px}#vitra-iphone .mini .meta strong{font-weight:500}
+#vitra-iphone nav{display:flex;align-items:center;gap:10px;border:0;box-shadow:none;background:none;backdrop-filter:none;margin:8px 0 0;padding:0;height:62px;justify-content:stretch}
+#vitra-iphone .nav-main{display:flex;flex:1;justify-content:space-around;border:1px solid #ffffff28;border-radius:34px;padding:4px;background:#435047c9;box-shadow:inset 0 1px #ffffff25;backdrop-filter:blur(30px) saturate(1.3)}#vitra-iphone nav button{padding:7px 22px;min-height:50px;min-width:0;flex:1;border-radius:29px}#vitra-iphone nav button.active{background:#e9f0e422}
+#vitra-iphone nav .search-tab{flex:0 0 62px;width:62px;height:62px;border-radius:50%;padding:8px;background:#435047c9;border:1px solid #ffffff28;box-shadow:inset 0 1px #ffffff25;backdrop-filter:blur(30px)}#vitra-iphone nav .search-tab span{font-size:9px}#vitra-iphone nav .search-tab.active{background:#748477d9}
+#vitra-iphone .dock.compact{display:flex;gap:7px;align-items:center}#vitra-iphone .dock.compact .mini{flex:1;min-width:0;order:2;height:54px}#vitra-iphone .dock.compact nav{display:contents}#vitra-iphone .dock.compact .nav-main{order:1;flex:none;padding:0;width:54px;height:54px}#vitra-iphone .dock.compact .nav-main button:not(.active){display:none}#vitra-iphone .dock.compact .nav-main button{padding:6px;min-width:52px;min-height:52px}#vitra-iphone .dock.compact .nav-main span{display:none}#vitra-iphone .dock.compact .search-tab{order:3;width:54px;height:54px;flex-basis:54px;min-height:54px;padding:7px}#vitra-iphone .dock.compact .search-tab span{display:none}#vitra-iphone .dock.compact .next{display:none}#vitra-iphone .dock.compact .mini .meta strong{font-size:12px}#vitra-iphone .dock.compact .mini .art{width:30px}
+#vitra-iphone .expanded{padding-top:17px;background:radial-gradient(ellipse at 0 30%,#7d73485c,transparent 70%),radial-gradient(ellipse at 100% 90%,#665d415c,transparent 65%),#252b26f7}#vitra-iphone .pc-player-head{height:33px;min-height:33px;margin-top:0}#vitra-iphone .pc-player-head>span{opacity:0}#vitra-iphone .expanded .bigcover{width:100%;max-width:292px;margin:18px auto 28px;border-radius:12px}
+#vitra-iphone .pc-song{display:flex;align-items:center;text-align:left;gap:8px;min-height:58px}#vitra-iphone .pc-song>div{flex:1;min-width:0}#vitra-iphone .pc-song h2{font-size:22px;line-height:1.2;margin:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}#vitra-iphone .pc-song .artist-link{display:block;text-align:left;padding:4px 0 0;color:#c2c8bd;font-size:17px}#vitra-iphone .pc-song>.round{width:31px;height:31px;flex:none;padding:7px;background:#ffffff12;border:0}#vitra-iphone .pc-song>.round svg{width:17px;height:17px}#vitra-iphone .pc-song>.round[aria-pressed=true]{background:#dce7dc;color:#283b2c}
+#vitra-iphone .expanded .transport{margin-top:14px;margin-bottom:17px}#vitra-iphone .pc-seek{margin-top:17px}#vitra-iphone .pc-volume{max-width:285px}#vitra-iphone .pc-volume>button{min-height:36px;height:36px;width:36px}#vitra-iphone .song-menu{flex:none;display:grid;padding:8px;margin-top:15px;background:#3b453dfa;border:1px solid #ffffff25;border-radius:20px;text-align:left}#vitra-iphone .song-menu button{text-align:left;padding:11px}
+#vitra-iphone .picks .art{border-radius:13px}#vitra-iphone .picks strong{font-size:16px}
+@media(max-width:350px){#vitra-iphone nav button{padding-left:12px;padding-right:12px}#vitra-iphone .expanded .bigcover{max-width:262px}#vitra-iphone .mobile-header h1{font-size:28px}#vitra-iphone .header-tools{gap:5px}}
+
+/* Neutral Apple Music-inspired surfaces; Vitra's pearl accent replaces red. */
+#vitra-iphone .phone{--ink:#f5f5f7;--dim:#a1a1a6;--glass:rgba(255,255,255,.075);--edge:rgba(255,255,255,.19);background:radial-gradient(ellipse at 0 0,#2c2c2e55,transparent 70%),#080809;border-color:#555558;color:var(--ink);color-scheme:dark}
+#vitra-iphone .eyebrow,#vitra-iphone .pc-player-head span{color:#b0b0b5}
+#vitra-iphone p,#vitra-iphone .meta small,#vitra-iphone .row>.time{color:var(--dim)}
+#vitra-iphone .round,#vitra-iphone .artist,#vitra-iphone .pill,#vitra-iphone .actions button{background:#ffffff0d;border-color:#ffffff26;color:#f5f5f7}
+#vitra-iphone .back,#vitra-iphone .librarylinks .row>svg:first-child{color:#e5e5ea}
+#vitra-iphone .librarylinks .row>svg:last-child{color:#8e8e93}
+#vitra-iphone .librarylinks .row,#vitra-iphone .setting{border-bottom-color:#ffffff17}
+#vitra-iphone input[type=search],#vitra-iphone input[type=text]{background:#76768026;border-color:#ffffff1c;color:#f5f5f7}
+#vitra-iphone input::placeholder{color:#98989d}
+#vitra-iphone .chips button{background:#76768026;color:#d1d1d6;border-color:#ffffff18}
+#vitra-iphone .chips button.active{background:#e5e5ea;color:#1c1c1e}
+#vitra-iphone .mini{background:linear-gradient(125deg,#62626777,#28282cbb);border-color:#ffffff38;box-shadow:inset 0 1px 1px #ffffff38,0 6px 25px #0004;backdrop-filter:blur(32px) saturate(1.15);color:#f5f5f7}
+#vitra-iphone .nav-main,#vitra-iphone nav .search-tab{background:linear-gradient(135deg,#60606666,#28282cbf);border-color:#ffffff2e;box-shadow:inset 0 1px 1px #ffffff2b,0 6px 22px #0003;backdrop-filter:blur(32px) saturate(1.15)}
+#vitra-iphone nav button{color:#aeaeb2}
+#vitra-iphone nav button.active{background:linear-gradient(135deg,#ffffff29,#ffffff12);color:#ffffff;box-shadow:inset 0 1px 1px #ffffff35}
+#vitra-iphone nav .search-tab.active{background:linear-gradient(135deg,#8e8e9355,#48484a99);color:#ffffff}
+#vitra-iphone .expanded{background:radial-gradient(ellipse at 15% 20%,#63636633,transparent 65%),radial-gradient(ellipse at 100% 85%,#48484a33,transparent 65%),#1c1c1ef7;backdrop-filter:blur(40px) saturate(1.1);color:#f5f5f7}
+#vitra-iphone .expanded .handle{background:#ebebf55c}
+#vitra-iphone .expanded p,#vitra-iphone .pc-song .artist-link,#vitra-iphone .expanded .timepair,#vitra-iphone .pc-volume>svg{color:#aeaeb2}
+#vitra-iphone .expanded .transport>.small,#vitra-iphone .pc-volume>button{background:#ffffff22;color:#f5f5f7}
+#vitra-iphone .expanded .transport>.small.on,#vitra-iphone .pc-volume>button.selected{background:#d1d1d6;color:#2c2c2e}
+#vitra-iphone .pc-song>.round{background:#ffffff14;color:#f5f5f7}
+#vitra-iphone .pc-song>.round[aria-pressed=true]{background:#d1d1d6;color:#2c2c2e}
+#vitra-iphone .song-menu{background:#2c2c2ef5;border-color:#ffffff25}
+#vitra-iphone .setting select{background:#2c2c2e;color:#f5f5f7;border-color:#ffffff25}
+#vitra-iphone input[type=checkbox]{accent-color:#c7c7cc}
+#vitra-iphone .homebar{background:#e5e5ea}
+#vitra-iphone .lyrics p{color:#8e8e93}#vitra-iphone .lyrics p.current{color:#f5f5f7}
+
+#vitra-iphone .recommendation-heading{margin:8px 0 22px}#vitra-iphone .recommendation-heading h2{margin:0 0 5px;font-size:24px;letter-spacing:-.6px}#vitra-iphone .recommendation-heading p{font-size:13px;color:#a1a1a6}
+#vitra-iphone .recommendations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 17px}
+#vitra-iphone .recommendation{display:block;min-width:0;text-align:left;padding:0}
+#vitra-iphone .recommendation .art{width:100%;border-radius:13px}
+#vitra-iphone .recommendation-caption{display:flex;align-items:center;gap:5px;margin-top:10px}
+#vitra-iphone .recommendation-caption>div{min-width:0;flex:1}
+#vitra-iphone .recommendation strong{font-size:14px;font-weight:500;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+#vitra-iphone .recommendation p{font-size:12px;margin:3px 0 0}
+#vitra-iphone .recommendation-play{display:grid;place-items:center;width:28px;height:28px;flex:none;background:#ffffff12;border:1px solid #ffffff16;border-radius:50%}
+#vitra-iphone .recommendation-play .pc-icon{width:13px;height:14px}
+#vitra-iphone .round{display:grid;place-items:center;padding:8px;flex-shrink:0}
+#vitra-iphone .round svg,#vitra-iphone .round canvas{display:block;margin:0}
+#vitra-iphone .row{align-items:center}#vitra-iphone .row>svg{display:block;flex:none;width:21px;height:21px}
+#vitra-iphone .row>svg:last-child{margin-left:auto;width:17px;height:17px}
+#vitra-iphone .row>.playlist-name,#vitra-iphone .row>strong{flex:1;min-width:0;text-align:left}
+#vitra-iphone nav button{align-items:center;justify-content:center;gap:3px}
+#vitra-iphone nav button svg{display:block;width:22px;height:22px;flex:none;margin:0}
+#vitra-iphone .mini>.play,#vitra-iphone .mini>.next{display:grid;place-items:center;width:38px;height:40px;min-width:38px;padding:7px}
+#vitra-iphone .mini .now{padding:0;display:flex;align-items:center}
+#vitra-iphone .header-tools .round{padding:7px}
+
+#vitra-iphone .search-heading{font-size:20px;margin:10px 0 14px}
+#vitra-iphone .artist-avatar{width:48px;height:48px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffffff1f,#ffffff09);border:1px solid #ffffff1c;color:#d1d1d6}
+#vitra-iphone .artist-avatar svg{width:23px;height:23px}
+#vitra-iphone .results .row{padding:10px 0;gap:12px;min-height:68px}
+#vitra-iphone .results .row .time{font-size:11px;color:#a1a1a6}
+#vitra-iphone .mini,
+#vitra-iphone .nav-main,
+#vitra-iphone nav .search-tab {
+  background: linear-gradient(125deg, #ffffff12, #ffffff04 50%, #ffffff0a);
+  border-color: #ffffff36;
+  box-shadow: inset 0 1px 1px #ffffff32, inset 0 -1px 1px #ffffff08, 0 8px 24px #00000025;
+  backdrop-filter: blur(16px) saturate(1.35);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+}
+#vitra-iphone nav button.active,
+#vitra-iphone nav .search-tab.active {
+  background: linear-gradient(140deg, #ffffff24, #ffffff0b);
+  box-shadow: inset 0 1px 1px #ffffff38, inset 0 -1px 1px #ffffff0a;
+  color: #ffffff;
+}
+#vitra-iphone .round,
+#vitra-iphone .artist,
+#vitra-iphone .pill,
+#vitra-iphone .actions button,
+#vitra-iphone .artist-avatar,
+#vitra-iphone .recommendation-play {
+  background: linear-gradient(135deg, #ffffff0e, #ffffff03);
+  border-color: #ffffff26;
+  box-shadow: inset 0 1px 1px #ffffff1a;
+}
+#vitra-iphone input[type=search],
+#vitra-iphone input[type=text] {
+  background: #ffffff07;
+  border-color: #ffffff24;
+  box-shadow: inset 0 1px 1px #ffffff12;
+  backdrop-filter: blur(10px);
+}
+#vitra-iphone .expanded {
+  background: linear-gradient(155deg, #38383a50, #14141685 60%, #26262860);
+  backdrop-filter: blur(32px) saturate(.9) brightness(.72);
+  -webkit-backdrop-filter: blur(32px) saturate(.9) brightness(.72);
+  box-shadow: inset 0 1px #ffffff30;
+}
+#vitra-iphone .expanded .transport>.small,
+#vitra-iphone .pc-volume>button,
+#vitra-iphone .pc-song>.round {
+  background: linear-gradient(125deg, #ffffff18, #ffffff09);
+  box-shadow: inset 0 1px 1px #ffffff26;
+  border: 1px solid #ffffff18;
+}
+#vitra-iphone .expanded .transport>.small.on,
+#vitra-iphone .pc-volume>button.selected,
+#vitra-iphone .pc-song>.round[aria-pressed=true] {
+  background: linear-gradient(135deg, #e5e5ead9, #c7c7ccba);
+  color: #252527;
+  box-shadow: inset 0 1px #ffffff75;
+}
+#vitra-iphone .song-menu {
+  background: #242426a8;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+#vitra-iphone .mini .meta strong,
+#vitra-iphone nav button,
+#vitra-iphone .pc-song {
+  text-shadow: 0 1px 7px #00000045;
+}
+
+#vitra-iphone .bigcover.photo {
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+#vitra-iphone .bigcover.photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+  transform-origin: 50% 50%;
+  animation: vitra-cover-drift 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+#vitra-iphone .expanded .bigcover.photo::after {
+  animation-play-state: paused;
+}
+#vitra-iphone .phone.is-playing .expanded .bigcover.photo::after {
+  animation-play-state: running;
+}
+@keyframes vitra-cover-drift {
+  0% { transform: scale(1.045) translate(-.8%, .5%); }
+  45% { transform: scale(1.10) translate(.6%, -.6%); }
+  100% { transform: scale(1.065) translate(.9%, .4%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #vitra-iphone .bigcover.photo::after { animation: none; transform: none; }
+}
+
+#vitra-iphone .feature-row{display:flex;align-items:center;gap:8px;min-height:70px;width:100%}
+#vitra-iphone .track-main{display:flex;align-items:center;gap:12px;min-width:0;flex:1;padding:10px 0;text-align:left}
+#vitra-iphone .track-main .art{width:48px;border-radius:9px}
+#vitra-iphone .track-main .meta{min-width:0;flex:1}
+#vitra-iphone .track-duration{font-size:11px;color:#a1a1a6;flex:none}
+#vitra-iphone .track-more{display:grid;place-items:center;width:34px;height:40px;flex:none;padding:7px;color:#d1d1d6}
+#vitra-iphone .track-more svg{width:20px;height:20px}
+#vitra-iphone .recommendation{position:relative}
+#vitra-iphone .recommended-cover{display:block;width:100%;padding:0}
+#vitra-iphone .recommendation-title{flex:1;min-width:0;text-align:left;padding:0}
+#vitra-iphone .recommendation-title strong{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vitra-iphone .recommendation-caption .track-more{width:27px;min-width:27px;height:34px;padding:4px}
+#vitra-iphone .recommendation-caption{gap:3px}
+#vitra-iphone .feature-sheet{position:absolute;inset:0;z-index:30;display:flex;align-items:flex-end;padding:12px 12px 28px}
+#vitra-iphone .feature-sheet[hidden]{display:none}
+#vitra-iphone .sheet-scrim{position:absolute;inset:0;background:#00000045;backdrop-filter:blur(5px)}
+#vitra-iphone .sheet-panel{position:relative;z-index:1;width:100%;max-height:80%;overflow:auto;border-radius:26px;background:#242426f0;border:1px solid #ffffff32;padding:15px 18px;box-shadow:inset 0 1px #ffffff22,0 20px 40px #0004;backdrop-filter:blur(28px)}
+#vitra-iphone .sheet-panel .top{gap:15px;margin-bottom:9px}
+#vitra-iphone .sheet-panel h3{font-size:17px;font-weight:600;overflow-wrap:anywhere}
+#vitra-iphone .sheet-panel .top button{width:38px;height:38px;display:grid;place-items:center;flex:none}
+#vitra-iphone .sheet-panel>button{display:flex;align-items:center;gap:12px;text-align:left;padding:14px 0;border-top:1px solid #ffffff12;width:100%;min-height:49px}
+#vitra-iphone .sheet-panel>button span{flex:1;min-width:0}
+#vitra-iphone .sheet-panel svg{width:20px;height:20px;flex:none}
+#vitra-iphone .playlist-cover-edit{display:block;margin:0 auto;padding:0;max-width:100%;text-align:center}
+#vitra-iphone .playlist-cover-edit>.bigcover{margin:12px auto 8px}
+#vitra-iphone .playlist-cover-edit>span{display:flex;align-items:center;justify-content:center;gap:7px;color:#aeaeb2;font-size:12px;margin-bottom:14px}
+#vitra-iphone .playlist-cover-edit>span svg{width:15px;height:15px}
+#vitra-iphone .custom-cover{display:block;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:2}
+#vitra-iphone .playlist-tools{display:flex;gap:9px;align-items:center;margin:15px 0 8px}
+#vitra-iphone .playlist-tools input{min-width:0;margin:0;flex:1;padding:11px 12px;font-size:14px}
+#vitra-iphone .playlist-tools .pill{flex:none;min-height:42px}
+#vitra-iphone .playlist-results{margin-bottom:18px}
+#vitra-iphone .content>.pill{display:inline-flex;align-items:center;gap:8px}
+#vitra-iphone .artist-heading{text-align:center;padding:20px 0 10px}
+#vitra-iphone .artist-heading .artist-avatar{width:110px;height:110px;margin:0 auto 20px}
+#vitra-iphone .artist-heading .artist-avatar svg{width:40px;height:40px}
+#vitra-iphone .artist-heading h1{font-size:28px}
+#vitra-iphone .device-card{margin:23px 0;padding:20px;background:#ffffff08;border:1px solid #ffffff1a;border-radius:23px}
+#vitra-iphone .device-card h2{margin:12px 0;font-size:19px}
+#vitra-iphone .device-card p{font-size:13px;margin:7px 0 18px}
+#vitra-iphone .demo-label{font-size:13px;margin:15px 0;color:#aeaeb2}
+#vitra-iphone .feature-toast{position:absolute;z-index:40;bottom:172px;left:23px;right:23px;background:#e5e5eaf2;color:#242426;border-radius:17px;padding:13px 16px;font-size:13px;box-shadow:0 8px 28px #0005;text-align:center;pointer-events:none}
+#vitra-iphone .feature-toast[hidden]{display:none}
+#vitra-iphone .now{touch-action:pan-y}
+#vitra-iphone .pc-player-head,#vitra-iphone .handle{touch-action:none}
+#vitra-iphone .reduce-cover-motion .bigcover.photo::after{animation:none;transform:none}
+#vitra-iphone .dock.compact .nav-main{width:104px}
+#vitra-iphone .dock.compact .nav-main button:not(.active){display:flex}
+#vitra-iphone .dock.compact .nav-main button{display:flex;align-items:center;justify-content:center;flex:1;min-width:50px;padding:6px}
+
+#vitra-iphone .photo.cover-0{background-image:url('/covers/0.webp');background-size:100% 100%;background-position:center;background-repeat:no-repeat;image-rendering:auto}
+#vitra-iphone .photo.cover-1{background-image:url('/covers/1.webp');background-size:100% 100%;background-position:center;background-repeat:no-repeat;image-rendering:auto}
+#vitra-iphone .photo.cover-2{background-image:url('/covers/2.webp');background-size:100% 100%;background-position:center;background-repeat:no-repeat;image-rendering:auto}
+#vitra-iphone .photo.cover-3{background-image:url('/covers/3.webp');background-size:100% 100%;background-position:center;background-repeat:no-repeat;image-rendering:auto}
+#vitra-iphone .photo.cover-4{background-image:url('/covers/4.webp');background-size:100% 100%;background-position:center;background-repeat:no-repeat;image-rendering:auto}
+#vitra-iphone .photo.cover-5{background-image:url('/covers/5.webp');background-size:100% 100%;background-position:center;background-repeat:no-repeat;image-rendering:auto}
+</style>
+
+
+
+
+
+
+
+<div id="vitra-lockscreen" class="viz-dotted-background" hidden>
+ <section class="lock-phone" aria-label="Vista previa de Vitra en la pantalla bloqueada del iPhone">
+  <div class="wallpaper"></div>
+  <div class="status"><span>Vitra</span><span class="island"></span><span class="connection" aria-label="Señal, wifi y batería 39 por ciento"><i data-lucide="signal" aria-hidden="true"></i><i data-lucide="wifi" aria-hidden="true"></i><span class="battery">39ϟ</span></span></div>
+  <header><div class="lock-symbol"><i data-lucide="lock-keyhole" aria-hidden="true"></i></div><div class="date">Vie 30 oct</div><div class="clock">9:03</div></header>
+  <button class="large-cover cover" aria-label="Cambiar tamaño de la portada"></button>
+  <section class="media" aria-label="Controles de Vitra">
+   <div class="track-header"><button class="small-cover cover" aria-label="Ampliar portada"></button><div class="metadata"><h2>Enzaciao</h2><p>Clarent</p></div><span class="waveform" aria-hidden="true"><span class="equalizer" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b></span></span></div>
+   <div class="timeline"><span class="elapsed">0:32</span><input type="range" min="0" max="134" value="32" aria-label="Posición de reproducción"><span class="remaining">−1:42</span></div>
+   <div class="transport"><button class="favorite" aria-label="Marcar favorita" aria-pressed="false"><canvas data-icon="favorite" width="72" height="72" aria-hidden="true"></canvas></button><button data-action="previous" aria-label="Canción anterior"><canvas data-icon="previous" width="72" height="72"></canvas></button><button data-action="play" class="play" aria-label="Pausar"><canvas data-icon="pause" width="72" height="72"></canvas></button><button data-action="next" aria-label="Siguiente canción"><canvas data-icon="next" width="72" height="72"></canvas></button><button class="output" aria-label="Ver salida de audio"><canvas data-icon="audio-output" width="72" height="72" aria-hidden="true"></canvas></button></div>
+   <div class="source"><span class="source-mark">▮▮▮</span><span>Vitra</span><span class="output-label">iPhone</span></div>
+
+  </section>
+  <input class="wallpaper-file" type="file" accept="image/*" hidden><footer><span class="shortcut" aria-label="Linterna"><i data-lucide="flashlight" aria-hidden="true"></i></span><button class="wallpaper-picker" aria-label="Elegir tu fondo de pantalla"><i data-lucide="person-standing" aria-hidden="true"></i><span>1</span></button><span class="shortcut" aria-label="Cámara"><i data-lucide="camera" aria-hidden="true"></i></span></footer>
+  <section class="audio-overlay" hidden aria-label="Selector de salida de audio"><button class="audio-backdrop" aria-label="Cerrar selector de audio"></button><div class="audio-destination" role="dialog" aria-modal="true" aria-label="Salida de audio"><div class="audio-track"><div class="output-art" role="img" aria-label="Portada de la canción"></div><div class="output-metadata"><h3 class="output-title">Enzaciao</h3><p class="output-artist">Clarent</p></div><span class="output-wave"><span class="equalizer" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b></span></span><button class="audio-close" aria-label="Cerrar salida de audio"><i data-lucide="x" aria-hidden="true"></i></button></div><div class="output-devices"><button class="audio-device selected" data-device="phone" aria-pressed="true"><i data-lucide="smartphone" aria-hidden="true"></i><span>iPhone Speaker</span><i class="device-check" data-lucide="check" aria-hidden="true"></i></button></div></div></section><div class="home-indicator"></div>
+ </section>
+</div>
+<style>
+
+
+#vitra-lockscreen{display:flex;justify-content:center;padding:24px 0}
+#vitra-lockscreen *{box-sizing:border-box}
+#vitra-lockscreen .lock-phone{position:relative;isolation:isolate;width:min(390px,100%);height:798px;overflow:hidden;border-radius:47px;border:1px solid #74716d;background:#141516;color:#f5f3ee;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;box-shadow:0 24px 60px #0005;color-scheme:dark}
+#vitra-lockscreen button{font:inherit;color:inherit;border:0;background:none;padding:0;touch-action:manipulation}
+#vitra-lockscreen button:active{transform:scale(.97)}
+#vitra-lockscreen .wallpaper{position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 12% 20%,#84725177,transparent 60%),radial-gradient(ellipse at 90% 70%,#574c3d66,transparent 65%),linear-gradient(170deg,#262b2d,#0c0e10)}
+#vitra-lockscreen .status{display:flex;justify-content:space-between;align-items:center;padding:22px 27px;height:60px;font-size:12px;font-weight:500}
+#vitra-lockscreen .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:112px;height:30px;border-radius:30px;background:#030404}
+#vitra-lockscreen header{text-align:center;height:148px;position:relative;padding-top:0}
+#vitra-lockscreen header>svg{width:16px;height:16px;display:block;margin:0 auto 5px;color:#e8e5dc}
+#vitra-lockscreen .date{font-size:16px;font-weight:500;letter-spacing:-.2px}
+#vitra-lockscreen .clock{font-size:87px;font-weight:500;line-height:1.05;letter-spacing:-5px;color:#f4edddcc;text-shadow:0 1px 0 #ffffff60,0 4px 24px #0002}
+#vitra-lockscreen .cover{background-image:var(--album-sheet);background-size:506.9869% 331.441%;background-position:94.0987% 30.566%;background-repeat:no-repeat;border-radius:15px;box-shadow:0 18px 35px #0004}
+#vitra-lockscreen .large-cover{display:block;width:268px;height:268px;margin:9px auto 18px;transition:width .35s,height .35s,opacity .2s,margin .35s;overflow:hidden}
+#vitra-lockscreen .media{margin:0 19px;padding:18px 18px 10px;border:1px solid #ffffff24;border-radius:29px;background:linear-gradient(135deg,#ffffff16,#ffffff05);box-shadow:inset 0 1px #ffffff25,0 14px 35px #0002;backdrop-filter:blur(22px) saturate(1.25);-webkit-backdrop-filter:blur(22px) saturate(1.25)}
+#vitra-lockscreen .track-header{display:flex;align-items:center;gap:12px;min-height:40px}
+#vitra-lockscreen .small-cover{display:none;width:48px;height:48px;border-radius:9px;box-shadow:0 5px 10px #0002;flex:none}
+#vitra-lockscreen .metadata{flex:1;min-width:0}
+#vitra-lockscreen h2{font-size:19px;font-weight:500;letter-spacing:-.4px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vitra-lockscreen p{font-size:14px;color:#d6d1c4aa;margin:3px 0 0}
+#vitra-lockscreen .output{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#ffffff10;border:1px solid #ffffff20;flex:none}
+#vitra-lockscreen .output svg{width:18px;height:18px}
+#vitra-lockscreen .timeline{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:11px;color:#dedad0b0;font-variant-numeric:tabular-nums}
+#vitra-lockscreen .timeline>span{min-width:29px}
+#vitra-lockscreen .timeline>span:last-child{text-align:right;min-width:34px}
+#vitra-lockscreen input{--position:24%;appearance:none;-webkit-appearance:none;height:26px;min-width:0;width:100%;flex:1;margin:0;padding:0;background:transparent;outline-offset:3px}
+#vitra-lockscreen input::-webkit-slider-runnable-track{height:4px;background:linear-gradient(to right,#f1eee3 var(--position),#ffffff35 var(--position));border:0;border-radius:5px}
+#vitra-lockscreen input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:7px;height:7px;background:#f1eee3;border:0;border-radius:50%;margin-top:-1.5px}
+#vitra-lockscreen input::-moz-range-track{height:4px;background:#ffffff35;border:0;border-radius:5px}
+#vitra-lockscreen input::-moz-range-progress{height:4px;background:#f1eee3;border-radius:5px}
+#vitra-lockscreen input::-moz-range-thumb{width:7px;height:7px;border:0;border-radius:50%;background:#f1eee3}
+#vitra-lockscreen .transport{display:flex;justify-content:center;align-items:center;gap:36px;height:66px;margin:4px 0 3px}
+#vitra-lockscreen .transport button{width:45px;height:48px;display:grid;place-items:center}
+#vitra-lockscreen .transport canvas{display:block;width:29px;height:26px}
+#vitra-lockscreen .transport .play{width:52px;height:58px}
+#vitra-lockscreen .transport .play canvas{width:35px;height:38px}
+#vitra-lockscreen .source{display:flex;align-items:center;gap:6px;font-size:10px;color:#ddd8cd99;min-height:20px}
+#vitra-lockscreen .source-mark{font-size:9px;letter-spacing:-1px;color:#d9d6cc}
+#vitra-lockscreen .output-label{margin-left:auto}
+#vitra-lockscreen footer{position:absolute;left:32px;right:32px;bottom:43px;display:flex;justify-content:space-between}
+#vitra-lockscreen .shortcut{display:grid;place-items:center;width:45px;height:45px;background:#ffffff0a;border:1px solid #ffffff23;border-radius:50%;box-shadow:inset 0 1px #ffffff18;backdrop-filter:blur(12px)}
+#vitra-lockscreen .shortcut svg{width:20px;height:20px}
+#vitra-lockscreen .home-indicator{position:absolute;bottom:10px;left:35%;width:30%;height:5px;border-radius:5px;background:#f4f2eb}
+#vitra-lockscreen .audio-destination{display:flex;gap:10px;align-items:center;font-size:13px;margin:10px 0 5px;padding:10px;border-radius:14px;background:#ffffff12}
+#vitra-lockscreen .audio-destination[hidden]{display:none}
+#vitra-lockscreen .audio-destination span{flex:1}
+#vitra-lockscreen .audio-destination svg{width:17px;height:17px}
+#vitra-lockscreen .lock-phone.compact .large-cover{width:0;height:0;opacity:0;margin:0 auto}
+#vitra-lockscreen .lock-phone.compact .small-cover{display:block}
+#vitra-lockscreen .lock-phone.compact .media{margin-top:212px}
+@media(max-width:350px){#vitra-lockscreen .lock-phone{border-radius:34px}#vitra-lockscreen .large-cover{width:260px;height:260px;margin-top:18px;margin-bottom:22px}#vitra-lockscreen .clock{font-size:81px}#vitra-lockscreen .media{margin-left:13px;margin-right:13px;padding-left:15px;padding-right:15px}}
+@media(prefers-reduced-motion:reduce){#vitra-lockscreen *{transition:none!important}}
+#vitra-lockscreen .lock-symbol{display:flex;justify-content:center;align-items:center;height:21px;margin-bottom:5px}#vitra-lockscreen .lock-symbol svg{width:16px;height:16px;display:block}
+#vitra-lockscreen .lock-phone{height:845px;border-radius:37px;background:#444648}
+#vitra-lockscreen .wallpaper{background:radial-gradient(ellipse at 75% 65%,#96979588,transparent 70%),linear-gradient(160deg,#2c2e30,#737574)}
+#vitra-lockscreen .island,#vitra-lockscreen .lock-symbol{display:none}
+#vitra-lockscreen .status{height:57px;padding:20px 27px;align-items:flex-start;font-size:14px}
+#vitra-lockscreen .status>span:first-child{display:flex;gap:7px;align-items:center}
+#vitra-lockscreen .status svg{width:15px;height:15px;display:block}
+#vitra-lockscreen .connection{display:flex;gap:7px;align-items:center}
+#vitra-lockscreen .connection .battery{font-size:10px;font-weight:600;background:linear-gradient(90deg,#42bf65 39%,#ffffff35 39%);border-radius:5px;padding:0 3px;line-height:15px}
+#vitra-lockscreen header{position:absolute;top:69px;left:0;right:0;height:35px;display:flex;align-items:center;justify-content:center;gap:20px;padding:0}
+#vitra-lockscreen .date{font-size:20px;font-weight:500;letter-spacing:-.2px;order:2;color:#dededf}
+#vitra-lockscreen .clock{font-size:21px;line-height:1;font-weight:600;letter-spacing:-.6px;order:1;color:#fff;text-shadow:none}
+#vitra-lockscreen .large-cover{position:absolute;top:157px;left:13px;width:calc(100% - 26px);height:auto;aspect-ratio:1;margin:0;border-radius:24px;box-shadow:0 30px 50px #0003}
+#vitra-lockscreen .media{position:absolute;top:591px;left:13px;right:13px;margin:0;padding:11px 17px 9px;border-radius:25px;background:linear-gradient(125deg,#18191be8,#17181bdd);border:1px solid #ffffff3b;box-shadow:inset 0 1px #ffffff14;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+#vitra-lockscreen .track-header{min-height:39px;position:relative;gap:10px}
+#vitra-lockscreen .metadata{text-align:center;padding:0 20px;min-width:0}
+#vitra-lockscreen h2{font-size:16px;font-weight:600;letter-spacing:-.25px;line-height:1.2}
+#vitra-lockscreen p{font-size:15px;margin-top:3px;color:#aeaeb3;line-height:1.1}
+#vitra-lockscreen .waveform{position:absolute;right:2px;top:4px;color:#8e8e9377;display:grid;place-items:center;width:22px;height:27px}
+#vitra-lockscreen .waveform svg{width:22px;height:25px}
+#vitra-lockscreen .timeline{margin-top:2px;gap:8px;font-size:10px;height:25px;color:#9d9da4}
+#vitra-lockscreen input{height:25px}
+#vitra-lockscreen input::-webkit-slider-runnable-track{height:6px;background:linear-gradient(to right,#b4b4bb var(--position),#55555a99 var(--position))}
+#vitra-lockscreen input::-webkit-slider-thumb{width:0;height:0;opacity:0}
+#vitra-lockscreen input::-moz-range-track{height:6px;background:#55555a99}
+#vitra-lockscreen input::-moz-range-progress{height:6px;background:#b4b4bb}
+#vitra-lockscreen input::-moz-range-thumb{opacity:0}
+#vitra-lockscreen .transport{justify-content:space-between;gap:0;height:49px;margin:0}
+#vitra-lockscreen .transport button{width:44px;height:45px;display:grid;place-items:center;flex:none}
+#vitra-lockscreen .transport canvas{width:31px;height:27px}
+#vitra-lockscreen .transport .play{width:48px;height:49px}
+#vitra-lockscreen .transport .play canvas{width:35px;height:37px}
+#vitra-lockscreen .transport .favorite,#vitra-lockscreen .transport .output{border:0;background:none;box-shadow:none;color:#99999e}
+#vitra-lockscreen .transport .favorite svg{width:25px;height:25px}
+#vitra-lockscreen .transport .output svg{width:22px;height:22px}
+#vitra-lockscreen .transport .favorite[aria-pressed=true]{color:#fff}
+#vitra-lockscreen .transport .favorite[aria-pressed=true] svg{fill:#ffffff30}
+#vitra-lockscreen .source{display:none}
+#vitra-lockscreen footer{left:48px;right:48px;bottom:54px;align-items:center}
+#vitra-lockscreen .shortcut{width:52px;height:52px;background:#ffffff14;border:1px solid #ffffff38;box-shadow:inset 0 1px #ffffff18}
+#vitra-lockscreen .shortcut svg{width:24px;height:24px;fill:#fff1}
+#vitra-lockscreen .wallpaper-picker{display:flex;align-items:center;gap:5px;font-size:13px;min-height:44px;padding:7px 10px;color:#f5f5f7}
+#vitra-lockscreen .wallpaper-picker svg{width:16px;height:16px}
+#vitra-lockscreen .home-indicator{height:4px;left:32%;width:36%;bottom:9px}
+#vitra-lockscreen .lock-phone.compact .wallpaper{background:radial-gradient(ellipse at 20% 35%,#cec0ab99,transparent 70%),linear-gradient(145deg,#55514a,#aaa394)}
+#vitra-lockscreen .lock-phone.compact header{top:72px;display:block;height:350px}
+#vitra-lockscreen .lock-phone.compact .date{font-size:20px;order:0;color:#fff}
+#vitra-lockscreen .lock-phone.compact .clock{position:absolute;top:28px;left:0;right:0;font-size:163px;font-weight:400;letter-spacing:-10px;line-height:1.15;transform:scaleY(1.88);transform-origin:50% 0;color:#f1e9de85;-webkit-text-stroke:.7px #ffffff7a;text-shadow:2px 1px 1px #ffffff6b,-2px 1px 5px #ffffff30,0 15px 25px #0001}
+#vitra-lockscreen .lock-phone.compact .large-cover{width:0;height:0;opacity:0;margin:0}
+#vitra-lockscreen .lock-phone.compact .media{top:490px;margin-top:0;padding:12px 12px 11px;background:linear-gradient(125deg,#272016ba,#131312c9);border-radius:24px;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+#vitra-lockscreen .lock-phone.compact .small-cover{display:block;width:51px;height:51px;border-radius:8px}
+#vitra-lockscreen .lock-phone.compact .track-header{min-height:51px;margin-bottom:7px}
+#vitra-lockscreen .lock-phone.compact .metadata{text-align:left;padding:0 23px 0 0}
+#vitra-lockscreen .lock-phone.compact .timeline{margin-top:2px}
+#vitra-lockscreen .lock-phone.compact .transport{margin-top:3px;height:49px}
+#vitra-lockscreen .lock-widgets{display:none}
+#vitra-lockscreen .lock-phone.compact .lock-widgets{position:absolute;top:662px;left:34px;right:26px;display:grid;grid-template-columns:1fr 1fr;gap:30px;color:#fff}
+#vitra-lockscreen .lock-widgets strong{font-size:17px;display:block;font-weight:600}
+#vitra-lockscreen .lock-widgets p{font-size:15px;line-height:1.2;color:#e5e5eacc;margin:2px 0 6px}
+#vitra-lockscreen .lock-widgets .battery-track{height:7px;width:100%;background:#ffffff35;border-radius:7px;overflow:hidden}
+#vitra-lockscreen .lock-widgets .battery-track span{display:block;width:78%;height:100%;background:#fff;border-radius:7px}
+@media(max-width:350px){#vitra-lockscreen .lock-phone{height:780px}#vitra-lockscreen .large-cover{top:153px}#vitra-lockscreen .media{top:513px}#vitra-lockscreen .lock-phone.compact .media{top:440px}#vitra-lockscreen .lock-phone.compact .clock{font-size:140px;transform:scaleY(1.9)}#vitra-lockscreen .lock-phone.compact .lock-widgets{top:612px;left:24px;right:24px;gap:20px}#vitra-lockscreen .lock-widgets p{font-size:13px}#vitra-lockscreen footer{left:37px;right:37px;bottom:45px}#vitra-lockscreen .metadata{padding-left:17px;padding-right:21px}}
+
+
+#vitra-lockscreen .transport .favorite canvas{width:25px;height:25px;color:#99999e}
+#vitra-lockscreen .transport .favorite[aria-pressed=true] canvas{color:#f5f5f7}
+#vitra-lockscreen .transport .output canvas{width:24px;height:24px;color:#99999e}
+
+#vitra-lockscreen .audio-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:0 22px 178px}
+#vitra-lockscreen .audio-overlay[hidden]{display:none}
+#vitra-lockscreen .audio-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:#00000048;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:inherit}
+#vitra-lockscreen .audio-overlay .audio-destination{position:relative;z-index:1;display:block;width:100%;margin:0;padding:15px 17px 17px;border-radius:25px;background:#28282bf5;border:1px solid #ffffff34;box-shadow:inset 0 1px #ffffff24,0 18px 45px #0005;color:#f5f5f7;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+#vitra-lockscreen .audio-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+#vitra-lockscreen .audio-panel-header h3{font-size:17px;font-weight:500;margin:0}
+#vitra-lockscreen .audio-panel-header .audio-close{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:50%;background:#ffffff12}
+#vitra-lockscreen .audio-overlay .audio-device{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:12px;border-radius:15px;background:#ffffff0e;color:#f5f5f7;text-align:left;font-size:15px}
+#vitra-lockscreen .audio-overlay .audio-device span{flex:1}
+#vitra-lockscreen .audio-overlay svg{display:block;width:20px;height:20px;flex:none}
+
+#vitra-lockscreen .audio-overlay{align-items:center;padding:0 22px}
+#vitra-lockscreen .audio-backdrop{background:#00000038;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+#vitra-lockscreen .audio-overlay .audio-destination{min-height:325px;padding:21px 16px;border-radius:39px;background:linear-gradient(135deg,#29292bea,#1b1b1ce8);border-color:#ffffff30;box-shadow:inset 0 1px #ffffff15,0 22px 50px #0004;backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px)}
+#vitra-lockscreen .audio-track{display:flex;align-items:center;gap:12px;min-height:67px;position:relative;margin-bottom:20px;padding-right:17px}
+#vitra-lockscreen .output-art{width:63px;height:63px;flex:none;border-radius:9px;background-image:var(--album-sheet);background-repeat:no-repeat;box-shadow:0 7px 15px #0003}
+#vitra-lockscreen .output-metadata{min-width:0;flex:1}
+#vitra-lockscreen .audio-track .output-title{font-size:16px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;line-height:1.25}
+#vitra-lockscreen .audio-track .output-artist{font-size:16px;color:#a1a1a6;margin:4px 0 0;line-height:1.2}
+#vitra-lockscreen .audio-track .output-wave{width:22px;height:28px;flex:none;color:#8e8e9366}
+#vitra-lockscreen .audio-track .audio-close{position:absolute;top:-11px;right:-8px;width:27px;height:27px;padding:6px;display:grid;place-items:center;border-radius:50%;background:#ffffff06;color:#b8b8bd}
+#vitra-lockscreen .audio-track .audio-close svg{width:14px;height:14px}
+#vitra-lockscreen .output-devices{display:grid;gap:9px}
+#vitra-lockscreen .audio-overlay .audio-device{display:flex;align-items:center;gap:12px;min-height:49px;padding:10px 15px;border-radius:28px;font-size:18px;font-weight:500;background:#ffffff13;color:#f5f5f7}
+#vitra-lockscreen .audio-overlay .audio-device.selected{background:linear-gradient(to right,#dedee0 25%,#808082 25%);color:#111112}
+#vitra-lockscreen .audio-overlay .audio-device>svg:first-child{width:24px;height:24px;stroke-width:1.8}
+#vitra-lockscreen .audio-overlay .audio-device>span{white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#vitra-lockscreen .audio-overlay .audio-device .device-check{visibility:hidden;width:24px;height:24px;stroke-width:2.2}
+#vitra-lockscreen .audio-overlay .audio-device.selected .device-check{visibility:visible}
+@media(max-width:350px){#vitra-lockscreen .audio-overlay{padding:0 16px}#vitra-lockscreen .audio-overlay .audio-destination{min-height:300px;padding:19px 14px;border-radius:32px}#vitra-lockscreen .output-art{width:56px;height:56px}#vitra-lockscreen .audio-track{gap:10px}#vitra-lockscreen .audio-track .output-title{font-size:14px}#vitra-lockscreen .audio-track .output-artist{font-size:14px}#vitra-lockscreen .audio-overlay .audio-device{font-size:16px;padding:10px 13px}}
+
+#vitra-lockscreen .equalizer{display:flex;align-items:center;justify-content:center;gap:2px;width:22px;height:22px;color:#a1a1a6}
+#vitra-lockscreen .equalizer b{display:block;flex:0 0 2.4px;height:20px;background:currentColor;border-radius:3px;transform-origin:center;transform:scaleY(.2);animation:lock-music-pulse .72s ease-in-out infinite alternate;animation-play-state:paused}
+#vitra-lockscreen .equalizer b:nth-child(2){animation-duration:.57s;animation-delay:-.31s}
+#vitra-lockscreen .equalizer b:nth-child(3){animation-duration:.83s;animation-delay:-.64s}
+#vitra-lockscreen .equalizer b:nth-child(4){animation-duration:.64s;animation-delay:-.15s}
+#vitra-lockscreen .equalizer b:nth-child(5){animation-duration:.91s;animation-delay:-.47s}
+#vitra-lockscreen .is-playing .equalizer b{animation-play-state:running}
+#vitra-lockscreen .lock-phone:not(.is-playing) .equalizer b{transform:scaleY(.18)!important}
+#vitra-lockscreen .audio-overlay[hidden] .equalizer b{animation-play-state:paused}
+#vitra-lockscreen .waveform{color:#a1a1a6}
+#vitra-lockscreen .audio-track .output-wave{display:grid;place-items:center}
+@keyframes lock-music-pulse{0%{transform:scaleY(.18)}23%{transform:scaleY(.65)}47%{transform:scaleY(.36)}72%{transform:scaleY(.96)}100%{transform:scaleY(.42)}}
+@media(prefers-reduced-motion:reduce){#vitra-lockscreen .equalizer b{animation:none!important;transform:scaleY(.35)}#vitra-lockscreen .equalizer b:nth-child(2n){transform:scaleY(.7)}}
+#vitra-lockscreen .equalizer{width:24px;height:25px;gap:1.6px;color:#929296;opacity:.68;align-items:center;justify-content:center}
+#vitra-lockscreen .equalizer b{flex:0 0 2.5px;max-width:2.5px;border-radius:4px;height:19px;transform:scaleY(.65);animation-name:lock-apple-wave;animation-duration:.9s;animation-timing-function:cubic-bezier(.37,0,.63,1);animation-direction:alternate}
+#vitra-lockscreen .equalizer b:nth-child(1){height:3px;animation-duration:1.06s;animation-delay:-.3s}
+#vitra-lockscreen .equalizer b:nth-child(2){height:6px;animation-duration:.86s;animation-delay:-.6s}
+#vitra-lockscreen .equalizer b:nth-child(3){height:16px;animation-duration:.76s;animation-delay:-.15s}
+#vitra-lockscreen .equalizer b:nth-child(4){height:23px;animation-duration:.93s;animation-delay:-.49s}
+#vitra-lockscreen .equalizer b:nth-child(5){height:20px;animation-duration:.83s;animation-delay:-.24s}
+#vitra-lockscreen .equalizer b:nth-child(6){height:18px;animation-duration:1.02s;animation-delay:-.7s}
+#vitra-lockscreen .lock-phone:not(.is-playing) .equalizer{opacity:.45}
+#vitra-lockscreen .lock-phone:not(.is-playing) .equalizer b{transform:scaleY(.62)!important}
+#vitra-lockscreen .waveform{right:0;top:6px;width:24px;height:25px}
+#vitra-lockscreen .audio-track .output-wave{width:24px;height:25px}
+@keyframes lock-apple-wave{0%{transform:scaleY(.45)}32%{transform:scaleY(.82)}64%{transform:scaleY(.58)}100%{transform:scaleY(1)}}
+
+#vitra-lockscreen{--lock-cover-0:url('/covers/0.webp');--lock-cover-1:url('/covers/1.webp');--lock-cover-2:url('/covers/2.webp');--album-sheet:var(--lock-cover-0)}
+</style>
+
+
+
+
+
+<style>
+html,body{margin:0;background:#080809;color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}body{min-height:100svh}button{cursor:pointer}[hidden]{display:none!important}#vitra-iphone,#vitra-lockscreen{padding:0;min-height:100svh;align-items:center}.viz-dotted-background{background:none}
+#vitra-iphone .phone,#vitra-lockscreen .lock-phone{height:min(845px,100svh);width:min(420px,100%)}#vitra-iphone .content{height:100%;padding-top:25px}#vitra-iphone .status{display:none}#vitra-iphone .equalizer{display:flex;align-items:center;justify-content:center;gap:1.6px;width:24px;height:25px;color:#98989d;flex:none}#vitra-iphone .equalizer b{display:block;width:2.5px;height:21px;border-radius:4px;background:currentColor;transform:scaleY(.08)}#vitra-iphone .live-wave{margin-right:6px}#vitra-iphone .pc-song .equalizer{margin-right:5px}
+#vitra-lockscreen .equalizer b{animation:none!important}#vitra-iphone .pc-song h2{font-size:22px}#vitra-iphone .original-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.real-status{position:fixed;left:50%;transform:translateX(-50%);top:12px;z-index:100;max-width:calc(100% - 30px);padding:9px 14px;border-radius:14px;background:#2c2c2ef0;color:#f5f5f7;font-size:13px;box-shadow:0 4px 20px #0004;pointer-events:none}
+#vitra-lockscreen .return-app{position:absolute;top:12px;left:15px;z-index:8;border:1px solid #ffffff28;border-radius:18px;background:#202022cc;color:#fff;font:inherit;font-size:12px;padding:8px 11px}#vitra-lockscreen .status{visibility:hidden}#vitra-lockscreen .audio-overlay .audio-destination{min-height:240px}
+@media(max-width:600px){#vitra-iphone .phone,#vitra-lockscreen .lock-phone{width:100%;height:100svh;border:0;border-radius:0;box-shadow:none}#vitra-iphone .content{padding-top:max(22px,env(safe-area-inset-top))}#vitra-iphone .homebar,#vitra-lockscreen .home-indicator{display:none}#vitra-iphone .dock{bottom:max(15px,env(safe-area-inset-bottom))}#vitra-iphone .expanded{padding-top:max(18px,env(safe-area-inset-top))}}
+</style><div class="real-status" hidden role="status"></div><script>window.openai={widgetState:{privateContent:JSON.parse(localStorage.getItem('vitra-mobile-session')||'null')},setWidgetState:async data=>{localStorage.setItem('vitra-mobile-session',JSON.stringify(data.privateContent));}};</script><script src="/lucide.js"></script><script src="/offline.js"></script><script src="/audio.js"></script><script src="/app.js"></script><script src="/lock.js"></script><style>/* Responsive lock layout: reserve a separate row for shortcuts. */
+#vitra-lockscreen .lock-phone{display:grid;grid-template-rows:110px minmax(0,1fr) auto 88px}
+#vitra-lockscreen .status{position:absolute;inset:0 0 auto}
+#vitra-lockscreen header{position:relative;top:auto;left:auto;right:auto;grid-row:1;height:auto;align-self:end;margin:0 0 12px}
+#vitra-lockscreen .large-cover{position:relative;top:auto;left:auto;grid-row:2;align-self:center;justify-self:center;width:min(calc(100% - 26px),calc(100svh - 390px),394px);height:auto;aspect-ratio:1;margin:0;max-height:100%}
+#vitra-lockscreen .media,#vitra-lockscreen .lock-phone.compact .media{position:relative;top:auto;left:auto;right:auto;grid-row:3;margin:16px 13px 12px;align-self:end;min-width:0}
+#vitra-lockscreen footer{position:relative;left:auto;right:auto;bottom:auto;grid-row:4;margin:0 42px;padding:6px 0 max(20px,env(safe-area-inset-bottom));align-self:stretch}
+#vitra-lockscreen .lock-phone.compact header{position:relative;top:auto;grid-row:1 / 3;height:auto;align-self:stretch;margin:72px 20px 24px;display:block;overflow:hidden}
+#vitra-lockscreen .lock-phone.compact .clock{top:35px;font-size:clamp(95px,37vw,163px);transform:scaleY(1.65)}
+#vitra-lockscreen .lock-phone.compact .large-cover{display:none}
+@media(max-height:650px){#vitra-lockscreen .lock-phone{grid-template-rows:86px minmax(0,1fr) auto 74px}#vitra-lockscreen header{margin-bottom:4px}#vitra-lockscreen .media{margin-top:12px;margin-bottom:8px}#vitra-lockscreen footer{padding-bottom:12px}#vitra-lockscreen .large-cover{width:min(calc(100% - 40px),calc(100svh - 335px))}}
+
+#vitra-lockscreen .waveform,#vitra-lockscreen .output-wave{display:none}
+</style><style>
+/* Keep glyphs centered independently of button size and inherited padding. */
+#vitra-iphone .pc-song>.round,#vitra-iphone .mobile-header .round{display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+#vitra-iphone .pc-song>.round svg,#vitra-iphone .pc-song>.round canvas{width:17px;height:17px;flex:none;margin:0;vertical-align:middle}
+#vitra-iphone .mobile-header .round svg,#vitra-iphone .mobile-header .round canvas{width:18px;height:18px;flex:none;margin:0;vertical-align:middle}
+</style><style>
+/* Translucent song options with restrained glass highlights. */
+#vitra-iphone .feature-sheet .sheet-panel{background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.025) 45%,rgba(255,255,255,.055)),rgba(24,24,28,.38);border:1px solid rgba(255,255,255,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.055),0 18px 44px rgba(0,0,0,.24);backdrop-filter:blur(22px) saturate(155%);-webkit-backdrop-filter:blur(22px) saturate(155%)}
+#vitra-iphone .feature-sheet .sheet-scrim{background:rgba(0,0,0,.12);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#vitra-iphone .sheet-panel>button{border-top-color:rgba(255,255,255,.12)}
+</style><style>
+#vitra-iphone .nav-main,#vitra-iphone nav .search-tab{background:linear-gradient(135deg,rgba(115,115,122,.20),rgba(28,28,32,.30));backdrop-filter:blur(24px) saturate(145%);-webkit-backdrop-filter:blur(24px) saturate(145%);border-color:rgba(255,255,255,.22)}
+#vitra-iphone nav button.active{background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.045));box-shadow:inset 0 1px 1px rgba(255,255,255,.23);color:#fff}
+</style><style>
+#vitra-iphone .nav-main{position:relative;isolation:isolate}
+#vitra-iphone .nav-main::before{content:'';position:absolute;pointer-events:none;z-index:0;left:4px;top:4px;bottom:4px;width:calc((100% - 8px)/2);border-radius:29px;background:linear-gradient(135deg,#ffffff20,#ffffff09);box-shadow:inset 0 1px 1px #ffffff40,inset 0 -1px 1px #ffffff0d;transform:translateX(0);transition:transform .48s cubic-bezier(.22,.85,.25,1),opacity .2s;transform-origin:center}
+#vitra-iphone .nav-main[data-selected=library]::before{transform:translateX(100%);animation:glass-right .48s ease-out}
+#vitra-iphone .nav-main[data-selected=home]::before{animation:glass-left .48s ease-out}
+#vitra-iphone .nav-main[data-selected=none]::before{opacity:0}
+#vitra-iphone .nav-main button{position:relative;z-index:1;transition:color .25s}
+#vitra-iphone .nav-main button.active{background:transparent;box-shadow:none}
+@keyframes glass-right{0%,100%{scale:1 1}42%{scale:1.10 .94}}
+@keyframes glass-left{0%,100%{scale:1 1}42%{scale:1.10 .94}}
+@media(prefers-reduced-motion:reduce){#vitra-iphone .nav-main::before{animation:none!important;transition:none!important}}
+</style><script>(()=>{const nav=document.querySelector('#vitra-iphone .nav-main');if(!nav)return;const sync=()=>{const selected=nav.querySelector('button.active');nav.dataset.selected=selected?selected.dataset.page:'none'};new MutationObserver(sync).observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});sync()})();</script><style>
+#vitra-iphone .pc-volume{width:82%;margin-left:auto;margin-right:auto;display:flex;align-items:center;gap:13px}
+#vitra-iphone .pc-volume input{flex:1;min-width:0}
+#vitra-iphone .player-bottom-tools{display:flex;justify-content:space-between;align-items:center;width:82%;margin:22px auto 0;padding-bottom:20px}
+#vitra-iphone .player-bottom-tools button{display:grid;place-items:center;width:44px;height:44px;padding:10px;border-radius:50%;color:#d3d3d8}
+#vitra-iphone .player-bottom-tools button svg{display:block;width:23px;height:23px}
+#vitra-iphone .player-bottom-tools button.selected{background:#ffffff1c;color:#fff}
+</style><style>#vitra-iphone .player-bottom-tools button[data-action="audio-output"] canvas{display:block;width:25px;height:25px}</style><style>#vitra-iphone .apple-airplay-official{display:block;width:25px;height:25px;background-repeat:no-repeat;background-size:80.77px 39.29px;background-position:-8.79px -6.59px;opacity:.86;mix-blend-mode:screen}</style><style>#vitra-iphone .queued-track{display:flex;align-items:center;gap:4px}#vitra-iphone .queued-track>.feature-row{flex:1;min-width:0}#vitra-iphone .queued-track>button{flex:none;width:32px;height:40px;padding:5px}</style><style>@media(max-height:650px){
+ #vitra-iphone .expanded{overflow-y:auto;padding-bottom:max(16px,env(safe-area-inset-bottom))}
+ #vitra-iphone .expanded .bigcover{width:clamp(120px,calc(100svh - 420px),220px);margin:8px auto 12px}
+ #vitra-iphone .pc-song{min-height:48px}
+ #vitra-iphone .pc-seek{margin-top:8px}
+ #vitra-iphone .expanded .transport{margin:6px 0}
+ #vitra-iphone .pc-volume{margin-top:6px;margin-bottom:0}
+ #vitra-iphone .player-bottom-tools{margin-top:6px;padding-bottom:0}
+}
+</style><style>#vitra-iphone .photo img.original-cover{display:block;width:100%;height:100%;object-fit:cover}
+</style><style>#vitra-iphone .artist-avatar{position:relative;overflow:hidden;flex:none}
+#vitra-iphone .artist-avatar .artist-photo{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+</style><style>#vitra-iphone .artist-hero{position:relative;height:340px;margin:-25px -22px 24px;overflow:hidden;background:#111}
+#vitra-iphone .artist-hero>img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
+#vitra-iphone .artist-hero-shade{position:absolute;inset:0;background:linear-gradient(0deg,#080809 0%,#08080955 50%,#0002)}
+#vitra-iphone .artist-back{position:absolute;left:20px;top:max(24px,env(safe-area-inset-top));width:42px;height:42px;display:grid;place-items:center;border:1px solid #ffffff26;border-radius:50%;background:#ffffff0d;backdrop-filter:blur(20px)}
+#vitra-iphone .artist-title{position:absolute;bottom:20px;left:22px;right:22px;display:flex;align-items:center;gap:16px}
+#vitra-iphone .artist-title h1{font-size:32px;line-height:1.05;margin:0;flex:1;letter-spacing:-.8px}
+#vitra-iphone .artist-title>button{flex:none;width:48px;height:48px;display:grid;place-items:center;border:1px solid #ffffff50;border-radius:50%;background:#ffffff25;backdrop-filter:blur(20px)}
+#vitra-iphone .latest-release{width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:4px 0 10px}
+#vitra-iphone .latest-release>img{width:94px;height:94px;object-fit:cover;border-radius:9px;flex:none}
+#vitra-iphone .latest-release>span{flex:1;min-width:0;display:grid;gap:5px}
+#vitra-iphone .latest-release small{font-size:10px;letter-spacing:.4px;color:var(--dim)}
+#vitra-iphone .latest-release strong{font-size:17px;font-weight:500;line-height:1.25}
+#vitra-iphone .latest-release span span{font-size:12px;color:var(--dim)}
+#vitra-iphone .release-carousel,#vitra-iphone .top-songs-carousel{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 22px 10px;margin:0 -22px;-webkit-overflow-scrolling:touch}
+#vitra-iphone .release-carousel::-webkit-scrollbar,#vitra-iphone .top-songs-carousel::-webkit-scrollbar{display:none}
+#vitra-iphone .release-tile{flex:0 0 164px;width:164px;min-width:0;text-align:left;scroll-snap-align:start;padding:0}
+#vitra-iphone .release-tile img{width:164px;height:164px;display:block;object-fit:cover;border-radius:9px;border:1px solid #ffffff16}
+#vitra-iphone .release-tile strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.25;font-weight:500;margin-top:8px}
+#vitra-iphone .release-tile small{display:block;color:var(--dim);font-size:13px;margin-top:3px}
+#vitra-iphone .top-songs-column{flex:0 0 calc(100% - 62px);min-width:0;scroll-snap-align:start}
+#vitra-iphone .artist-top-row{display:flex;align-items:center;gap:4px;height:74px;border-bottom:1px solid #ffffff12}
+#vitra-iphone .top-track{display:flex;align-items:center;gap:11px;flex:1;min-width:0;text-align:left;padding:8px 0}
+#vitra-iphone .top-track>img{width:50px;height:50px;border-radius:6px;object-fit:cover;flex:none}
+#vitra-iphone .top-track>span{flex:1;min-width:0}
+#vitra-iphone .top-track strong,#vitra-iphone .top-track small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vitra-iphone .top-track strong{font-size:13px;font-weight:500}
+#vitra-iphone .top-track small{font-size:10px;color:var(--dim);line-height:1.5}
+#vitra-iphone .artist-top-row>button:last-child{padding:10px 0 10px 8px}
+#vitra-iphone .catalog-loading{padding:24px 0;color:var(--dim)}
+#vitra-iphone .catalog-album-header{text-align:center;margin:24px 0}
+#vitra-iphone .catalog-album-header>img{display:block;width:min(260px,80%);aspect-ratio:1;object-fit:cover;border-radius:14px;margin:0 auto 22px}
+#vitra-iphone .catalog-album-header h1{font-size:25px;margin:12px 0}
+@media(prefers-reduced-motion:no-preference){#vitra-iphone .release-carousel,#vitra-iphone .top-songs-carousel{scroll-behavior:smooth}}
+
+#vitra-iphone .release-carousel,#vitra-iphone .top-songs-carousel{scroll-padding-inline:22px}
+#vitra-iphone .release-carousel,#vitra-iphone .top-songs-carousel{touch-action:pan-x pan-y;cursor:grab;user-select:none;scroll-snap-type:x proximity;scroll-padding-inline:22px;overscroll-behavior-x:contain}
+#vitra-iphone .release-carousel.is-dragging,#vitra-iphone .top-songs-carousel.is-dragging{scroll-snap-type:none;scroll-behavior:auto;cursor:grabbing}
+#vitra-iphone .release-carousel img,#vitra-iphone .top-songs-carousel img{-webkit-user-drag:none;user-select:none}
+</style><style>#vitra-iphone .continuation-panel>h3{margin:22px 0 8px;font-size:16px;font-weight:600}
+#vitra-iphone .continuation-panel .track-main{min-width:0}
+</style><style>.mini .now{min-width:0;overflow:hidden}.mini .now .meta{min-width:0;overflow:hidden;flex:1}.mini .now .meta strong{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:100%}.mini .now .meta strong.scrolling-title{text-overflow:clip;mask-image:linear-gradient(90deg,transparent,#000 5px,#000 calc(100% - 7px),transparent)}.marquee-title{display:inline-block;white-space:nowrap;max-width:none;will-change:transform}
+
+#vitra-iphone .scrolling-title .marquee-title{animation:vitra-title-pan var(--marquee-duration,14s) linear infinite!important}@keyframes vitra-title-pan{0%,15%{transform:translateX(0)}45%,60%{transform:translateX(var(--marquee-distance))}90%,100%{transform:translateX(0)}}#vitra-iphone .phone.reduce-title-motion .scrolling-title .marquee-title{animation:none!important}
+
+</style><style>@media(max-width:600px){html,body{overscroll-behavior:none}#vitra-iphone .phone,#vitra-lockscreen .lock-phone{height:100dvh;min-height:100svh}#vitra-iphone input[type=search],#vitra-iphone input[type=text]{font-size:16px}#vitra-iphone .real-status{top:max(12px,env(safe-area-inset-top))}}a.install-vitra{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;padding:14px 8px;border-bottom:1px solid #ffffff15}</style></body></html>
