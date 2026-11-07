@@ -1,5 +1,6 @@
 """Public Apple Music page metadata. Ranking is Apple's order, never stream counts."""
-import concurrent.futures,datetime,json,re,threading,time,unicodedata,urllib.request
+import concurrent.futures,datetime,json,os,re,threading,time,unicodedata,urllib.request
+from audio_matching import choose
 from urllib.parse import urlencode,urlsplit
 from html.parser import HTMLParser
 class PageData(HTMLParser):
@@ -11,17 +12,17 @@ class PageData(HTMLParser):
  def handle_endtag(self,tag):
   if tag=='script':self.active=False
 class AppleCatalogue:
- def __init__(self,root,art,search):
-  self.root=root;self.art=art;self.search=search;self.lock=threading.RLock();self.cache={};self.songs={};self.urls={}
+ def __init__(self,root,art,search,search_fresh=None,fallback_search=None):
+  self.root=root;self.art=art;self.search=search;self.lock=threading.RLock();self.cache={};self.songs={};self.urls={};self.audio_cache={};self.audio_misses={};self.flights={};self.latest_jobs=set();self.refresh_jobs=set();self.refresh_after={};self.latest_pool=concurrent.futures.ThreadPoolExecutor(max_workers=2);self.search_fresh=search_fresh;self.fallback_search=fallback_search
   try:
-   stored=json.loads((root/'cache'/'apple-catalogue.json').read_text(encoding='utf8'));self.cache=stored.get('cache',{});self.songs=stored.get('songs',{});self.urls=stored.get('urls',{})
+   stored=json.loads((root/'cache'/'apple-catalogue.json').read_text(encoding='utf8'));self.cache=stored.get('cache',{});self.songs=stored.get('songs',{});self.urls=stored.get('urls',{});self.audio_cache=stored.get('audioCache',{})
   except (OSError,ValueError):pass
  @staticmethod
  def key(name):return re.sub(r'[^a-z0-9]','', ''.join(c for c in unicodedata.normalize('NFKD',name.lower()) if not unicodedata.combining(c)))
  def persist(self):
   with self.lock:
-   (self.root/'cache'/'apple-catalogue.json').write_text(json.dumps({'cache':self.cache,'songs':self.songs,'urls':self.urls}),encoding='utf8')
-   (self.root/'cache'/'artwork.json').write_text(json.dumps(self.art),encoding='utf8')
+   for name,value in [('apple-catalogue.json',{'cache':self.cache,'songs':self.songs,'urls':self.urls,'audioCache':self.audio_cache}),('artwork.json',self.art)]:
+    path=self.root/'cache'/name;path.parent.mkdir(exist_ok=True);temporary=path.with_name(name+'.'+str(os.getpid())+'.'+str(threading.get_ident())+'.tmp');temporary.write_text(json.dumps(value),encoding='utf8');temporary.replace(path)
  def get(self,url):
   if urlsplit(url).scheme!='https' or urlsplit(url).hostname not in ('music.apple.com','itunes.apple.com'):raise ValueError('Fuente Apple no válida')
   req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept-Language':'en-US,en;q=0.9'})
@@ -29,29 +30,92 @@ class AppleCatalogue:
  def page(self,url):
   parser=PageData();parser.feed(self.get(url));body=json.loads(''.join(parser.parts))
   return body['data'][0]['data']
- def cached(self,key,load):
-  with self.lock:hit=self.cache.get(key)
-  if hit and time.time()-hit[0]<900 and not(key.startswith('artist:') and (not hit[1].get('latest') or 'relatedArtists' not in hit[1])) and not(key.startswith('AM') and not hit[1].get('releaseDate')):return hit[1]
-  value=load()
-  with self.lock:self.cache[key]=[time.time(),value];self.persist()
-  return value
- def picture(self,item,identity):
+ def cached(self,key,load,ttl=None,force=False):
+  with self.lock:flight=self.flights.setdefault(key,threading.RLock())
+  with flight:
+   with self.lock:hit=self.cache.get(key)
+   age=time.time()-hit[0] if hit else float('inf')
+   lifespan=60 if key.startswith('artist:') else 86400
+   if key.startswith('AM'):
+    try:recent=(datetime.date.today()-datetime.date.fromisoformat(hit[1].get('releaseDate',''))).days<=7 if hit else True
+    except ValueError:recent=True
+    lifespan=60 if recent else 86400
+   if ttl is not None:lifespan=ttl
+   valid=hit and (not key.startswith('artist:') or 'relatedArtists' in hit[1] and hit[1].get('artworkVersion')==3)
+   if valid and age<(15 if force else lifespan):return hit[1]
+   try:value=load()
+   except Exception:
+    if valid and age<86400:return {**hit[1],'stale':True}
+    raise
+   with self.lock:self.cache[key]=[time.time(),value];self.persist()
+   return value
+ def picture(self,item,identity,width=720,height=720):
   url=item.get('dictionary',{}).get('url','')
   if not re.fullmatch(r'is\d+-ssl\.mzstatic\.com',urlsplit(url).hostname or ''):return '/icon.png'
-  url=url.replace('{w}','720').replace('{h}','720').replace('{c}','bb').replace('{f}','jpg')
+  url=url.replace('{w}',str(width)).replace('{h}',str(height)).replace('{c}','bb').replace('{f}','jpg')
   self.art['AM'+str(identity)]=url
   return '/api/art/AM'+str(identity)
- def artist(self,name):
-  return self.cached('artist:'+self.key(name),lambda:self.load_artist(name))
+ def artist(self,name,force=False):
+  cache_key='artist:'+self.key(name)
+  with self.lock:
+   hit=self.cache.get(cache_key)
+   if not force and hit and 'relatedArtists' in hit[1] and hit[1].get('artworkVersion')==3 and 60<=time.time()-hit[0]<7*86400:
+    if cache_key not in self.refresh_jobs and time.time()>=self.refresh_after.get(cache_key,0):
+     self.refresh_jobs.add(cache_key);self.refresh_after[cache_key]=time.time()+60;self.latest_pool.submit(self._refresh_artist,name,cache_key)
+    return {**hit[1],**({'latestChecking':True,'refreshing':True} if cache_key in self.refresh_jobs else {'stale':True})}
+  profile=self.cached(cache_key,lambda:self.load_artist(name),force=force)
+  if profile.get('latestChecking'):
+   with self.lock:
+    if cache_key not in self.latest_jobs:self.latest_jobs.add(cache_key);self.latest_pool.submit(self._finish_latest,cache_key,profile)
+  return profile
+ def _refresh_artist(self,name,cache_key):
+  try:
+   self.cached(cache_key,lambda:self.load_artist(name),force=True)
+   self.artist(name)
+  except Exception:pass
+  finally:
+   with self.lock:self.refresh_jobs.discard(cache_key)
+ def _finish_latest(self,cache_key,profile):
+  try:
+   candidates=[];seen=set()
+   for card in ([profile.get('latest')] if profile.get('latest') else [])+profile.get('albums',[])[:2]+profile.get('singles',[])[:2]:
+    if card and card.get('id') not in seen:seen.add(card['id']);candidates.append(card)
+   def load(card):
+    try:return self.album(card['id'])
+    except Exception:return None
+   with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:releases=[r for r in pool.map(load,candidates[:5]) if r and r.get('releaseDate') and r['releaseDate']<=datetime.date.today().isoformat()]
+   result={**profile,'latestChecking':False}
+   if releases:result['latest']=max(releases,key=lambda r:r['releaseDate'])
+   with self.lock:
+    current=self.cache.get(cache_key)
+    if current and current[1].get('verifiedAt')==profile.get('verifiedAt'):self.cache[cache_key]=[current[0],result];self.persist()
+  finally:
+   with self.lock:self.latest_jobs.discard(cache_key)
+
  def load_artist(self,name):
-  results=json.loads(self.get('https://itunes.apple.com/search?'+urlencode({'term':name,'entity':'musicArtist','country':'us','limit':30})))['results']
-  match=next((r for r in results if self.key(r.get('artistName',''))==self.key(name)),None)
-  if not match:raise ValueError('No se encontró un perfil coincidente en Apple Music.')
-  url=match['artistLinkUrl'].split('?')[0];data=self.page(url);artist_name=match['artistName'];identity=str(match['artistId']);top=[];albums=[];singles=[];latest=None;hero='/icon.png';related=[]
+  def identity():
+   results=json.loads(self.get('https://itunes.apple.com/search?'+urlencode({'term':name,'entity':'musicArtist','country':'us','limit':30})))['results']
+   match=next((r for r in results if self.key(r.get('artistName',''))==self.key(name)),None)
+   if not match:raise ValueError('No se encontró un perfil coincidente en Apple Music.')
+   return match
+  match=self.cached('identity:'+self.key(name),identity,ttl=86400)
+  url=match['artistLinkUrl'].split('?')[0];data=self.page(url);artist_name=match['artistName'];identity=str(match['artistId']);top=[];albums=[];singles=[];latest=None;hero='/icon.png';banner='';banner_mobile='';banner_video='';banner_video_mobile='';related=[]
   for section in data.get('sections',[]):
    kind=section.get('itemKind','')
    if kind=='artistDetailHeader':
-    header=section.get('items',[{}])[0];hero=self.picture(header.get('circleArtwork',{}),identity)
+    header=section.get('items',[{}])[0];hero=self.picture(header.get('circleArtwork') or header.get('artwork') or {},'P'+identity)
+    wide=header.get('wideArtwork') or {};motion=(header.get('wideVideoArtwork') or {}).get('dictionary',{})
+    movie=motion.get('motionArtistFullscreen16x9') or motion.get('motionArtistWide16x9') or next(iter(motion.values()),{})
+    if not wide.get('dictionary',{}).get('url') and movie.get('previewFrame'):wide={'dictionary':movie['previewFrame']}
+    if wide.get('dictionary',{}).get('url'):banner=self.picture(wide,'B'+identity,1440,810)
+    square_motion=(header.get('videoArtwork') or {}).get('dictionary',{});square=next(iter(square_motion.values()),{})
+    if isinstance(square,dict) and square.get('previewFrame'):banner_mobile=self.picture({'dictionary':square['previewFrame']},'M'+identity,1000,1000)
+    if banner=='/icon.png':banner=''
+    if banner_mobile=='/icon.png':banner_mobile=''
+    mobile_candidate=square.get('video','') if isinstance(square,dict) else ''
+    if urlsplit(mobile_candidate).scheme=='https' and urlsplit(mobile_candidate).hostname=='mvod.itunes.apple.com':banner_video_mobile=mobile_candidate
+    candidate=movie.get('video','')
+    if urlsplit(candidate).scheme=='https' and urlsplit(candidate).hostname=='mvod.itunes.apple.com':banner_video=candidate
    if kind=='artistFeaturedContentAndTracks':
     item=section.get('items',[{}])[0];featured=item.get('featuredContent',{})
     if featured and 'LatestRelease' in item.get('id',''):
@@ -62,15 +126,8 @@ class AppleCatalogue:
    if kind=='squareLockup':
     if '.Albums-' in section.get('id',''):albums=[self.release(t,artist_name) for t in section.get('items',[])]
     elif '.ArtistSingles-' in section.get('id',''):singles=[self.release(t,artist_name) for t in section.get('items',[])]
-  if not latest and (albums or singles):
-   cards=albums+singles;newest_year=max(c['year'] for c in cards);candidates=[c for c in cards if c['year']==newest_year]
-   def load(card):
-    try:return self.album(card['id'])
-    except Exception:return None
-   with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:releases=[r for r in pool.map(load,candidates) if r and r.get('releaseDate')]
-   latest=max(releases,key=lambda r:r['releaseDate'],default=None)
   if not top and not latest:raise ValueError('Apple Music no devolvió canciones o lanzamientos verificables.')
-  return {'genre':match.get('primaryGenreName',''),'relatedArtists':related,'name':artist_name,'appleArtistId':identity,'hero':hero,'topSongs':top,'albums':albums,'singles':singles,'latest':latest,'ranking':'apple-music-top-songs','source':'Apple Music','sourceUrl':url,'verifiedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+  return {'artworkVersion':3,'portrait':hero,'banner':banner,'bannerMobile':banner_mobile,'bannerVideo':banner_video,'bannerVideoMobile':banner_video_mobile,'latestChecking':True,'genre':match.get('primaryGenreName',''),'relatedArtists':related,'name':artist_name,'appleArtistId':identity,'hero':hero,'topSongs':top,'albums':albums,'singles':singles,'latest':latest,'ranking':'apple-music-top-songs','source':'Apple Music','sourceUrl':url,'verifiedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
  def release(self,item,artist,details=None):
   descriptor=item.get('contentDescriptor',{});identity=str(descriptor.get('identifiers',{}).get('storeAdamID') or item.get('id',''));url=descriptor.get('url','');self.urls[identity]=url
   details=details or {};title=details.get('title') or item.get('title') or ' '.join(x.get('title','') for x in item.get('titleLinks',[]));subtitle=' '.join(x.get('title','') for x in item.get('subtitleLinks',[]));date=details.get('headline','');year=re.search(r'\b(?:19|20)\d{2}\b',date or subtitle)
@@ -80,9 +137,9 @@ class AppleCatalogue:
   record={'appleId':identity,'t':item.get('title',''),'a':item.get('artistName') or artist,'album':album or ' '.join(t.get('title','') for t in item.get('subtitleLinks') or []),'d':f'{seconds//60}:{seconds%60:02}','durationSeconds':seconds,'art':self.picture(item.get('artwork') or {},identity) if item.get('artwork') else art or '/icon.png','plays':None,'playsLabel':'','c':'#606066','sourceUrl':descriptor.get('url','')}
   self.songs[identity]=record
   return record
- def album(self,identity):
+ def album(self,identity,force=False):
   if not re.fullmatch(r'AM\d+',identity):raise ValueError('Álbum Apple no válido')
-  return self.cached(identity,lambda:self.load_album(identity[2:]))
+  return self.cached(identity,lambda:self.load_album(identity[2:]),force=force)
  def load_album(self,identity):
   url=self.urls.get(identity) or 'https://music.apple.com/us/album/'+identity;data=self.page(url);header=next((s['items'][0] for s in data['sections'] if s.get('itemKind')=='containerDetailHeaderLockup'),{})
   artist=', '.join(t.get('title','') for t in header.get('subtitleLinks') or []);title=header.get('title','');art=self.picture(header.get('artwork',{}),identity);year=re.search(r'\b(?:19|20)\d{2}\b',header.get('quaternaryTitle',''));tracks=[]
@@ -95,20 +152,26 @@ class AppleCatalogue:
    try:release_date=datetime.datetime.strptime(date_label,pattern).date().isoformat();break
    except ValueError:pass
   return {'id':'AM'+identity,'title':title,'artist':artist,'art':art,'year':year[0] if year else '', 'kind':'Sencillo' if 'single' in title.lower() else 'Álbum','tracks':tracks,'sourceUrl':url,'releaseDate':release_date,'dateLabel':date_label,'trackCountLabel':str(len(tracks))+' canciones'}
- def resolve_audio(self,identity):
+ def resolve_audio(self,identity,force=False,excluded=()):
+  with self.lock:flight=self.flights.setdefault('audio:'+identity,threading.RLock())
+  with flight:return self._resolve_audio(identity,force,excluded)
+ def _resolve_audio(self,identity,force=False,excluded=()):
   if not identity.isdigit() or identity not in self.songs:raise ValueError('Canción no registrada')
-  key='audio:'+identity
-  if key in self.urls:return self.urls[key]
-  song=self.songs[identity];choices=self.search(song['a']+' '+song['t'])
-  def title_key(value):return self.key(re.sub(r'\s*[\[(]?(?:feat\.?|ft\.?|featuring)\s+.*','',value,flags=re.I))
-  title=title_key(song['t'])
-  candidates=[t for t in choices if title_key(t['t'])==title]
-  if not candidates:raise ValueError('No se encontró la versión exacta de esta canción en YouTube.')
-  target_artists=[self.key(v) for v in re.split(r',|&',song['a']) if len(v.strip())>2]
-  def score(t):
-   artist_match=sum(a in self.key(t['a']) for a in target_artists)
-   parts=t.get('d','0:00').split(':');duration=sum(int(part)*60**i for i,part in enumerate(reversed(parts)) if part.isdigit());target=song.get('durationSeconds',0)
-   return artist_match*1000-(min(500,abs(duration-target)) if duration and target else 0)
-  candidates.sort(key=score,reverse=True)
-  if target_artists and score(candidates[0])<=0:raise ValueError('No se encontró una coincidencia del artista en YouTube.')
-  self.urls[key]=candidates[0]['vid'];self.persist();return self.urls[key]
+  now=time.time();cached=self.audio_cache.get(identity)
+  if not force and cached and now-cached.get('at',0)<86400 and cached.get('vid') not in excluded:return cached['vid']
+  if not force and now-self.audio_misses.get(identity,0)<20:raise ValueError('Todavía no encontramos el audio exacto. Vuelve a intentarlo en unos segundos.')
+  song=self.songs[identity];query=song['a']+' '+song['t'];search_error=None
+  try:choices=self.search(query)
+  except Exception as error:choices=[];search_error=error
+  match=choose(song,choices,excluded)
+  if (not match or force) and self.search_fresh:
+   try:match=choose(song,self.search_fresh(query),excluded)
+   except Exception as error:search_error=error
+  if not match and self.fallback_search:
+   try:match=choose(song,self.fallback_search(query+' official audio'),excluded)
+   except Exception as error:search_error=error
+  if not match and search_error:raise ValueError('No se pudieron consultar todas las fuentes de audio. Revisa la conexión y vuelve a intentarlo.') from None
+  if not match:
+   self.audio_misses[identity]=now
+   raise ValueError('El lanzamiento está en el catálogo, pero todavía no encontramos su audio exacto en YouTube. Se volverá a comprobar al reintentar.')
+  self.audio_cache[identity]={'vid':match['vid'],'at':now};self.audio_misses.pop(identity,None);self.persist();return match['vid']

@@ -1,0 +1,37 @@
+name: Build iPhone preview
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["ios/**", "scripts/build-ios.sh", ".github/workflows/build-ios.yml"]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Build unsigned device IPA
+        run: bash scripts/build-ios.sh
+      - name: Upload iPhone test package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vitra-iPhone-unsigned
+          path: |
+            dist/Vitra-unsigned.ipa
+            dist/Vitra-unsigned.ipa.sha256
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publish preview release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          TAG=v0.2.0-preview
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "Vitra 0.2.0 · iPhone preview" --prerelease --notes-file docs/RELEASE_NOTES.md
+          fi
+          gh release upload "$TAG" dist/Vitra-unsigned.ipa dist/Vitra-unsigned.ipa.sha256 --clobber
