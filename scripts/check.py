@@ -18,10 +18,10 @@ with tempfile.TemporaryDirectory() as tmp:
 with socket.socket() as listener:
     listener.bind(("127.0.0.1", 0))
     port = listener.getsockname()[1]
-process = subprocess.Popen([sys.executable, "server.py", "--host", "127.0.0.1", "--port", str(port)], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+process = subprocess.Popen([sys.executable, "server.py", "--host", "127.0.0.1", "--port", str(port)], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
 try:
     for attempt in range(50):
-        if process.poll() is not None: raise RuntimeError("Server exited before health check")
+        if process.poll() is not None: raise RuntimeError("Server exited before health check: " + process.stderr.read().decode("utf8", errors="replace")[-3000:])
         try:
             with urllib.request.urlopen(f"http://127.0.0.1:{port}/healthz", timeout=1) as response:
                 assert json.load(response)["status"] == "ok"

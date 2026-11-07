@@ -33,7 +33,7 @@ En GitHub, **Actions → Build iPhone preview → Run workflow**. También se co
 
 Después de una compilación correcta:
 
-- **Releases → Vitra 0.2.0 · iPhone preview** contiene `Vitra-unsigned.ipa` y su SHA-256.
+- **Releases → Vitra 0.2.1 · iPhone preview** contiene `Vitra-unsigned.ipa` y su SHA-256.
 - **Actions → ejecución → Artifacts** contiene una copia temporal del mismo paquete.
 - Una ejecución fallida no produce una IPA utilizable.
 

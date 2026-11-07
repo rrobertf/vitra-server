@@ -1,4 +1,4 @@
-## Vitra 0.2.0 · iPhone preview
+## Vitra 0.2.1 · iPhone preview
 
 Versión de prueba con la interfaz móvil renovada, biblioteca local sin cuenta y el contenedor experimental para iPhone.
 

@@ -197,8 +197,7 @@ class Handler(BaseHTTPRequestHandler):
   try:self.account_POST()
   except (BrokenPipeError,ConnectionResetError):pass
   except Exception as error:
-   (ROOT/'data'/'account-diagnostic.json').write_text(json.dumps({'type':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None)}),encoding='utf8')
-   self.send_json(503,{'error':'El servidor no pudo acceder a tu cuenta. Inténtalo de nuevo.'})
+   self.send_json(503,{'error':'El servidor no pudo completar la solicitud. Vuelve a intentarlo.'})
  def account_POST(self):
   if auth.handle(self):return
   if not auth.user(self):self.send_json(401,{'error':'Inicia sesión para continuar.'});return
@@ -266,8 +265,7 @@ class Handler(BaseHTTPRequestHandler):
   try:self.account_GET()
   except (BrokenPipeError,ConnectionResetError):pass
   except Exception as error:
-   (ROOT/'data'/'account-diagnostic.json').write_text(json.dumps({'type':type(error).__name__,'sqlstate':getattr(error,'sqlstate',None)}),encoding='utf8')
-   self.send_json(503,{'error':'El servidor no pudo acceder a tu cuenta. Inténtalo de nuevo.'})
+   self.send_json(503,{'error':'El servidor no pudo completar la solicitud. Vuelve a intentarlo.'})
  def account_GET(self):
   route=urlsplit(self.path);path=route.path
   if path=='/healthz':self.send_json(200,{'status':'ok'});return

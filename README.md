@@ -10,7 +10,7 @@
 ![Datos](https://img.shields.io/badge/biblioteca-en_tu_dispositivo-607c71?style=flat-square)
 ![iPhone](https://img.shields.io/badge/iPhone-compilaci%C3%B3n_experimental-8c8298?style=flat-square)
 
-[Explorar funciones](#una-experiencia-centrada-en-la-música) · [Empezar](#ejecutar-vitra) · [Probar en iPhone](#iphone-e-ipa) · [Cómo funciona](#cómo-funciona) · [Preguntas frecuentes](#preguntas-frecuentes)
+[Descargar IPA de prueba](https://github.com/rrobertf/vitra-server/releases/tag/v0.2.1-preview) · [Explorar funciones](#una-experiencia-centrada-en-la-música) · [Empezar](#ejecutar-vitra) · [Probar en iPhone](#iphone-e-ipa) · [Cómo funciona](#cómo-funciona) · [Preguntas frecuentes](#preguntas-frecuentes)
 
 </div>
 
@@ -112,7 +112,7 @@ La IPA generada **no está firmada**. Está preparada para que una herramienta c
 
 También puedes compilar desde un Mac con Xcode, elegir tu equipo de firma y ejecutar en el iPhone conectado. Una cuenta gratuita no proporciona una instalación permanente. Para distribución firmada y sus restricciones, revisa la [documentación de Apple](https://developer.apple.com/documentation/xcode/running-your-app-on-simulated-or-physical-devices).
 
-> **Pruebas pendientes:** la compilación iOS y su ejecución en iPhone físico deben verificarse. El contenedor necesita la dirección HTTPS de tu servidor. No sustituye al backend ni convierte automáticamente el audio web en reproducción nativa en segundo plano.
+> **Validación:** el proyecto iOS se compila en un runner macOS de GitHub Actions. La ejecución en un iPhone físico sigue pendiente. El contenedor necesita la dirección HTTPS de tu servidor. No sustituye al backend ni convierte automáticamente el audio web en reproducción nativa en segundo plano.
 
 ## Cómo funciona
 
